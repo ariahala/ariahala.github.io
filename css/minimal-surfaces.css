@@ -1,43 +1,37 @@
-/* Quiet geometry behind the existing page, concentrated in the margins. */
-body {
-  isolation: isolate;
+/* Keep the page above its decoration with explicit layers, including in Safari. */
+.nav-main,
+body > .container.content {
+  position: relative;
+  z-index: 1;
 }
 
 .minimal-surface-background {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   display: block;
   width: 100%;
   height: 100%;
   pointer-events: none;
   user-select: none;
-  -webkit-mask-image: linear-gradient(to right,
-    #000 0%, #000 calc(50% - 23rem),
-    rgba(0, 0, 0, .10) calc(50% - 16rem),
-    rgba(0, 0, 0, .10) calc(50% + 16rem),
-    #000 calc(50% + 23rem), #000 100%);
-  mask-image: linear-gradient(to right,
-    #000 0%, #000 calc(50% - 23rem),
-    rgba(0, 0, 0, .10) calc(50% - 16rem),
-    rgba(0, 0, 0, .10) calc(50% + 16rem),
-    #000 calc(50% + 23rem), #000 100%);
-}
-
-@media (max-width: 58rem) {
-  .minimal-surface-background {
-    opacity: .75;
-    -webkit-mask-image: linear-gradient(to right,
-      #000, rgba(0, 0, 0, .10) 15%,
-      rgba(0, 0, 0, .10) 85%, #000);
-    mask-image: linear-gradient(to right,
-      #000, rgba(0, 0, 0, .10) 15%,
-      rgba(0, 0, 0, .10) 85%, #000);
-  }
 }
 
 @media print {
   .minimal-surface-background {
     display: none;
+  }
+}
+
+/* Keep the existing navigation within the phone viewport. */
+@media (max-width: 38rem) {
+  .nav-main ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-main li a {
+    padding-right: clamp(.4rem, 2.1vw, .85rem);
+    padding-left: clamp(.4rem, 2.1vw, .85rem);
   }
 }

@@ -202,6 +202,25 @@
   let currentScroll = 0;
   let frame = 0;
   let previousTime = 0;
+  let marginFade = null;
+
+  function updateFade() {
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 17;
+    marginFade = context.createLinearGradient(0, 0, width, 0);
+    if (width <= 58 * rem) {
+      marginFade.addColorStop(0, 'rgba(0,0,0,.75)');
+      marginFade.addColorStop(.15, 'rgba(0,0,0,.075)');
+      marginFade.addColorStop(.85, 'rgba(0,0,0,.075)');
+      marginFade.addColorStop(1, 'rgba(0,0,0,.75)');
+    } else {
+      marginFade.addColorStop(0, '#000');
+      marginFade.addColorStop((width / 2 - 23 * rem) / width, '#000');
+      marginFade.addColorStop((width / 2 - 16 * rem) / width, 'rgba(0,0,0,.1)');
+      marginFade.addColorStop((width / 2 + 16 * rem) / width, 'rgba(0,0,0,.1)');
+      marginFade.addColorStop((width / 2 + 23 * rem) / width, '#000');
+      marginFade.addColorStop(1, '#000');
+    }
+  }
 
   function readScroll() {
     return clamp(window.scrollY / scrollRange, 0, 1);
@@ -254,6 +273,13 @@
       }
       context.stroke();
     }
+
+    // Bake the fade into the pixels instead of masking the fixed layer in CSS.
+    context.save();
+    context.globalCompositeOperation = 'destination-in';
+    context.fillStyle = marginFade;
+    context.fillRect(0, 0, width, height);
+    context.restore();
   }
 
   function tick(time) {
@@ -286,6 +312,7 @@
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    updateFade();
     scrollRange = Math.max(1, document.documentElement.scrollHeight - height);
     targetScroll = readScroll();
     currentScroll = targetScroll;
