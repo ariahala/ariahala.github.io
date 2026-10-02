@@ -41,7 +41,7 @@ body > .container.content {
   min-height: 100vh;
   background: #faf9f6;
   color: #484848;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .drawing-caption {
@@ -55,6 +55,7 @@ body > .container.content {
   padding: .8rem 1.2rem;
   border-radius: .25rem;
   background: rgba(250, 249, 246, .9);
+  font-family: Georgia, 'Times New Roman', serif;
   text-align: center;
 }
 
