@@ -1,6 +1,6 @@
 /*
- * One monochrome surface per page load. Native canvas keeps this static site
- * self-contained: no CDN, WebGL requirement, tracking, or continuous idle loop.
+ * One monochrome scene per page load. Native canvas keeps this static site
+ * self-contained. Every scene drifts gently at up to 30 fps and responds to scroll.
  * All coordinate normalizations are uniform, preserving the minimal surfaces.
  * The Schwarz P candidate is explicitly a nodal approximation, not the exact
  * minimal Schwarz P surface.
@@ -185,15 +185,22 @@
     { name: 'catenoid-helicoid-associate', make: associate, tilt: .38, edgeOffset: .24 },
     { name: 'schwarz-p-nodal-approximation', make: schwarzPNodalApproximation, tilt: .54 }
   ];
+  if (window.createDrawingSurfaceScene) presets.push({ name: 'sketch-constellation' });
 
   // No persistence: a fresh load makes a fresh choice, fixed until the next load.
-  const preset = presets[Math.floor(Math.random() * presets.length)];
+  const requestedSurface = document.body.dataset.surface ||
+    new URLSearchParams(window.location.search).get('surface');
+  const preset = presets.find(candidate => candidate.name === requestedSurface) ||
+    presets[Math.floor(Math.random() * presets.length)];
   const side = Math.random() < .5 ? -1 : 1;
   const initialTurn = -.65 + Math.random() * .3;
-  const geometry = preset.make();
+  const artwork = document.body.dataset.surfaceDisplay === 'artwork';
+  const drawing = preset.name === 'sketch-constellation' ?
+    window.createDrawingSurfaceScene({ context, compact, artwork, side }) : null;
+  const geometry = drawing ? null : preset.make();
   canvas.dataset.surface = preset.name;
 
-  const projected = geometry.vertices.map(() => [0, 0, 0]);
+  const projected = geometry ? geometry.vertices.map(() => [0, 0, 0]) : [];
   const buckets = Array.from({ length: 7 }, () => []);
   let width = 0;
   let height = 0;
@@ -202,7 +209,17 @@
   let currentScroll = 0;
   let frame = 0;
   let previousTime = 0;
+  let motionTime = 0;
+  let lastRenderTime = 0;
+  let motionPaused = reducedMotion.matches;
   let marginFade = null;
+  const motionToggle = document.getElementById('surface-motion-toggle');
+
+  function updateMotionToggle() {
+    if (!motionToggle) return;
+    motionToggle.textContent = motionPaused ? 'Resume motion' : 'Pause motion';
+    motionToggle.setAttribute('aria-pressed', String(motionPaused));
+  }
 
   function updateFade() {
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 17;
@@ -227,10 +244,14 @@
   }
 
   function render(t) {
+    if (drawing) {
+      drawing.render(width, height, t, motionTime, marginFade);
+      return;
+    }
     context.clearRect(0, 0, width, height);
-    const ax = preset.tilt + .28 * t;
-    const ay = initialTurn + 1.8 * t;
-    const az = -.22 + .2 * Math.sin(Math.PI * t);
+    const ax = preset.tilt + .28 * t + .045 * Math.sin(motionTime * .09);
+    const ay = initialTurn + 1.8 * t + motionTime * .035;
+    const az = -.22 + .2 * Math.sin(Math.PI * t) + .025 * Math.sin(motionTime * .07);
     const sx = Math.sin(ax), cx = Math.cos(ax);
     const sy = Math.sin(ay), cy = Math.cos(ay);
     const sz = Math.sin(az), cz = Math.cos(az);
@@ -285,20 +306,23 @@
   function tick(time) {
     frame = 0;
     if (document.hidden) return;
-    if (reducedMotion.matches) {
-      render(0);
+    if (motionPaused) {
+      render(reducedMotion.matches ? 0 : currentScroll);
       previousTime = 0;
       return;
     }
     const dt = previousTime ? Math.min(time - previousTime, 64) : 16;
     previousTime = time;
+    motionTime += dt / 1000;
     currentScroll += (targetScroll - currentScroll) * (1 - Math.exp(-dt / 85));
     if (Math.abs(targetScroll - currentScroll) < .00015) {
       currentScroll = targetScroll;
-      previousTime = 0;
     }
-    render(currentScroll);
-    if (currentScroll !== targetScroll) frame = requestAnimationFrame(tick);
+    if (!lastRenderTime || time - lastRenderTime >= 1000 / 30) {
+      render(currentScroll);
+      lastRenderTime = time;
+    }
+    frame = requestAnimationFrame(tick);
   }
 
   function schedule() {
@@ -316,12 +340,13 @@
     scrollRange = Math.max(1, document.documentElement.scrollHeight - height);
     targetScroll = readScroll();
     currentScroll = targetScroll;
+    lastRenderTime = 0;
     schedule();
   }
 
   window.addEventListener('scroll', () => {
     targetScroll = readScroll();
-    if (!reducedMotion.matches) schedule();
+    if (!motionPaused) schedule();
   }, { passive: true });
   window.addEventListener('resize', resize, { passive: true });
   window.addEventListener('pageshow', resize);
@@ -333,8 +358,22 @@
       previousTime = 0;
     } else resize();
   });
-  if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', resize);
-  else reducedMotion.addListener(resize);
+  function motionPreferenceChanged() {
+    motionPaused = reducedMotion.matches;
+    updateMotionToggle();
+    previousTime = 0;
+    resize();
+  }
+  if (reducedMotion.addEventListener) reducedMotion.addEventListener('change', motionPreferenceChanged);
+  else reducedMotion.addListener(motionPreferenceChanged);
+  if (motionToggle) motionToggle.addEventListener('click', () => {
+    motionPaused = !motionPaused;
+    updateMotionToggle();
+    previousTime = 0;
+    lastRenderTime = 0;
+    schedule();
+  });
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(document.body);
+  updateMotionToggle();
   resize();
 })();
