@@ -14,7 +14,7 @@
 .papers-intro {
   color: #626975;
   line-height: 1.65;
-  margin-bottom: 2.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .paper-list {
@@ -24,7 +24,7 @@
 
 .paper-entry {
   padding-left: .25rem;
-  margin-bottom: 2.25rem;
+  margin-bottom: 1.1rem;
 }
 
 .paper-entry::marker {
@@ -121,8 +121,8 @@
 }
 
 .papers-page .papers-section-title {
-  margin-top: 3.25rem;
-  padding-top: 1.75rem;
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
   border-top: 1px solid #dce2e9;
   color: #0a3b76;
   font-size: 1.4rem;
@@ -191,10 +191,10 @@
 @media (max-width: 38rem) {
   .paper-entry {
     padding-left: .15rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.1rem;
   }
 
   .papers-intro {
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.35rem;
   }
 }
