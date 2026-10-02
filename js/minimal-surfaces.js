@@ -1,6 +1,6 @@
 /*
  * One monochrome scene per page load. Native canvas keeps this static site
- * self-contained. Every scene drifts gently at up to 30 fps and responds to scroll.
+ * self-contained. Scenes drift at 30 fps and follow scrolling at up to 60 fps.
  * All coordinate normalizations are uniform, preserving the minimal surfaces.
  * The Schwarz P candidate is explicitly a nodal approximation, not the exact
  * minimal Schwarz P surface.
@@ -211,6 +211,7 @@
   let previousTime = 0;
   let motionTime = 0;
   let lastRenderTime = 0;
+  let scrollNeedsRender = false;
   let motionPaused = reducedMotion.matches;
   let marginFade = null;
   const motionToggle = document.getElementById('surface-motion-toggle');
@@ -314,13 +315,16 @@
     const dt = previousTime ? Math.min(time - previousTime, 64) : 16;
     previousTime = time;
     motionTime += dt / 1000;
-    currentScroll += (targetScroll - currentScroll) * (1 - Math.exp(-dt / 85));
-    if (Math.abs(targetScroll - currentScroll) < .00015) {
+    const interval = 1000 / (scrollNeedsRender ? 60 : 30);
+    const elapsed = time - lastRenderTime;
+    if (!lastRenderTime || elapsed + .5 >= interval) {
+      // Follow the page on this repaint, without an easing tail after scrolling.
       currentScroll = targetScroll;
-    }
-    if (!lastRenderTime || time - lastRenderTime >= 1000 / 30) {
       render(currentScroll);
-      lastRenderTime = time;
+      scrollNeedsRender = false;
+      // Carry the fractional remainder to avoid dropping every third frame.
+      lastRenderTime = lastRenderTime ?
+        lastRenderTime + Math.max(1, Math.floor((elapsed + .5) / interval)) * interval : time;
     }
     frame = requestAnimationFrame(tick);
   }
@@ -346,6 +350,7 @@
 
   window.addEventListener('scroll', () => {
     targetScroll = readScroll();
+    scrollNeedsRender = true;
     if (!motionPaused) schedule();
   }, { passive: true });
   window.addEventListener('resize', resize, { passive: true });

@@ -71,8 +71,24 @@
   }
 
   window.createDrawingSurfaceScene = ({ context, compact, artwork, side = 1 }) => {
-    const meshes = { globe: globe(), pod: pod(), coil: coil() };
-    const central = globe(true);
+    // Reuse projection buffers and style groups instead of allocating thousands
+    // of points, segments, and string keys during each scrolling frame.
+    const styles = [];
+    const styleIds = new Map();
+    function prepare(lines, opacity) {
+      return lines.map(line => {
+        const alpha = Math.round(line.opacity * opacity * 10) / 10;
+        const key = `${alpha},${line.weight}`;
+        if (!styleIds.has(key)) {
+          styleIds.set(key, styles.length);
+          styles.push({ alpha, weight: line.weight,
+            buckets: Array.from({ length: 6 }, () => ({ data: new Float32Array(1024), length: 0 })) });
+        }
+        return { points: new Float64Array(line.points.flat()), style: styles[styleIds.get(key)] };
+      });
+    }
+    const meshes = { globe: prepare(globe(), .86), pod: prepare(pod(), .86), coil: prepare(coil(), .86) };
+    const central = prepare(globe(true), 1);
     // Each hanging strand has its own rhythm; nothing resets at a screen edge.
     const strands = [
       { x: .08, phase: .2, beads: [[.15, 'globe', .075], [.47, 'pod', .045], [.84, 'globe', .07]] },
@@ -84,30 +100,39 @@
       { x: .82, phase: 2.9, beads: [[.14, 'coil', .045], [.38, 'globe', .039], [.7, 'pod', .035], [.95, 'coil', .04]] },
       { x: .94, phase: 4.9, beads: [[.26, 'pod', .075], [.53, 'globe', .065], [.86, 'globe', .08]] }
     ];
-    const buckets = Array.from({ length: 6 }, () => []);
-
-    function add(lines, center, size, rotation, opacity = 1, stretch = 1) {
+    function add(lines, center, size, rotation, stretch = 1) {
       const [ax, ay, az] = rotation;
       const sx = Math.sin(ax), cx = Math.cos(ax);
       const sy = Math.sin(ay), cy = Math.cos(ay);
       const sz = Math.sin(az), cz = Math.cos(az);
       for (const line of lines) {
-        let previous = null;
-        for (const [x, rawY, z] of line.points) {
-          const y = rawY * stretch;
+        let previousX = 0, previousY = 0, previousZ = 0;
+        const points = line.points;
+        for (let i = 0; i < points.length; i += 3) {
+          const x = points[i], y = points[i + 1] * stretch, z = points[i + 2];
           const y1 = y * cx - z * sx;
           const z1 = y * sx + z * cx;
           const x2 = x * cy + z1 * sy;
           const z2 = -x * sy + z1 * cy;
           const perspective = 1 / (1 - z2 * .09);
-          const point = [center[0] + (x2 * cz - y1 * sz) * size * perspective,
-            center[1] - (x2 * sz + y1 * cz) * size * perspective, z2];
-          if (previous) {
-            const depth = Math.max(0, Math.min(5, Math.floor(3 + (z2 + previous[2]) * 1.15)));
-            buckets[depth].push([previous[0], previous[1], point[0], point[1],
-              line.opacity * opacity, line.weight]);
+          const pointX = center[0] + (x2 * cz - y1 * sz) * size * perspective;
+          const pointY = center[1] - (x2 * sz + y1 * cz) * size * perspective;
+          if (i) {
+            const depth = Math.max(0, Math.min(5, Math.floor(3 + (z2 + previousZ) * 1.15)));
+            const bucket = line.style.buckets[depth];
+            if (bucket.length + 4 > bucket.data.length) {
+              const larger = new Float32Array(bucket.data.length * 2);
+              larger.set(bucket.data);
+              bucket.data = larger;
+            }
+            bucket.data[bucket.length++] = previousX;
+            bucket.data[bucket.length++] = previousY;
+            bucket.data[bucket.length++] = pointX;
+            bucket.data[bucket.length++] = pointY;
           }
-          previous = point;
+          previousX = pointX;
+          previousY = pointY;
+          previousZ = z2;
         }
       }
     }
@@ -120,7 +145,9 @@
     return {
       render(width, height, scroll, time, marginFade) {
         context.clearRect(0, 0, width, height);
-        for (const bucket of buckets) bucket.length = 0;
+        for (const style of styles) {
+          for (const bucket of style.buckets) bucket.length = 0;
+        }
         const unit = Math.min(width, height);
         const center = [width * (.5 + (artwork ? 0 : side * .27)) + unit * .012 * Math.sin(time * .08),
           height * (.49 - .025 * scroll) + unit * .008 * Math.cos(time * .1)];
@@ -129,14 +156,14 @@
         for (const strand of strands) {
           if (compact && (strand.x === .45 || strand.x === .57)) continue;
           const sway = .026 * Math.sin(time * .13 + strand.phase);
-          const spine = sample(t => {
-            const y = t * 1.16 - .08;
-            return [strandX(strand, y, time, width), height * y, 0];
-          }, 100);
           // Draw the continuous, gently waving threads beneath the beads.
           context.beginPath();
-          context.moveTo(spine[0][0], spine[0][1]);
-          for (const point of spine) context.lineTo(point[0], point[1]);
+          for (let i = 0; i <= 100; i++) {
+            const y = i / 100 * 1.16 - .08;
+            const x = strandX(strand, y, time, width);
+            if (i) context.lineTo(x, height * y);
+            else context.moveTo(x, height * y);
+          }
           context.strokeStyle = artwork ? 'rgba(72,72,72,.14)' : 'rgba(72,72,72,.075)';
           context.lineWidth = .6;
           context.stroke();
@@ -149,32 +176,28 @@
             const turn = time * (i % 2 ? -.095 : .08) + strand.phase + scroll * .8;
             add(meshes[type], [x, height * y], size,
               [.12 + .1 * Math.sin(time * .1 + strand.phase), turn,
-                .14 * Math.sin(time * .13 + strand.phase + i)], .86,
+                .14 * Math.sin(time * .13 + strand.phase + i)],
               type === 'globe' ? 1.05 : 2.1);
           }
         }
 
         add(central, center, radius, [.16 + .04 * Math.sin(time * .08),
-          time * .045 + scroll * .6, -.05 + .025 * Math.sin(time * .09)], 1, 1.04);
+          time * .045 + scroll * .6, -.05 + .025 * Math.sin(time * .09)], 1.04);
 
         // One path per opacity/weight group keeps the animation light on phones.
         context.lineCap = 'round';
-        for (let depth = 0; depth < buckets.length; depth++) {
-          const groups = new Map();
-          for (const segment of buckets[depth]) {
-            const key = `${Math.round(segment[4] * 10)},${segment[5]}`;
-            if (!groups.has(key)) groups.set(key, []);
-            groups.get(key).push(segment);
-          }
-          for (const [key, segments] of groups) {
-            const [opacity, weight] = key.split(',').map(Number);
+        for (let depth = 0; depth < 6; depth++) {
+          for (const style of styles) {
+            const bucket = style.buckets[depth];
+            if (!bucket.length) continue;
             const alpha = (artwork ? .22 : .12) + depth * (artwork ? .04 : .02);
-            context.strokeStyle = `rgba(72,72,72,${alpha * opacity / 10})`;
-            context.lineWidth = (artwork ? .8 : .65) * weight;
+            context.strokeStyle = `rgba(72,72,72,${alpha * style.alpha})`;
+            context.lineWidth = (artwork ? .8 : .65) * style.weight;
             context.beginPath();
-            for (const [x0, y0, x1, y1] of segments) {
-              context.moveTo(x0, y0);
-              context.lineTo(x1, y1);
+            const data = bucket.data;
+            for (let i = 0; i < bucket.length; i += 4) {
+              context.moveTo(data[i], data[i + 1]);
+              context.lineTo(data[i + 2], data[i + 3]);
             }
             context.stroke();
           }
