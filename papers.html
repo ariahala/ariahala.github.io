@@ -17,16 +17,7 @@
   <link rel="stylesheet" href="/css/minimal-surfaces.css?v=20261002-fix">
   <script src="/js/drawing-surfaces.js?v=20261002-crowded" defer></script>
   <script src="/js/minimal-surfaces.js?v=20261002-smooth-scroll" defer></script>
-  <style>
-    .paper-links {
-      display: block;
-      margin-top: 0.15rem;
-      margin-left: 1.25rem;
-    }
-    .paper-links::before {
-      content: "\2022  ";
-    }
-  </style>
+  <link rel="stylesheet" href="/css/papers.css?v=20261002-papers">
   <link rel="icon" type="image/png" sizes="192x192" href="https://ariahala.github.io/favicon.png">
   <link rel="shortcut icon" href="https://ariahala.github.io/favicon.ico">
   <link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://ariahala.github.io/apple-touch-icon.png">
@@ -35,7 +26,7 @@
 </head>
 
 
-  <body>
+  <body class="papers-page">
     <nav class="nav-main">
       <ul>
         <li class="hvr-underline-reveal"><a href="https://ariahala.github.io/talks.html">Talks</a></li>
@@ -50,36 +41,88 @@
       <main>
         <article class="page">
   <h1 class="page-title">Papers</h1>
-  <p class="message">
+  <p class="papers-intro">
   Here is the list of my publications and preprints. The files here may include some minor updates and subsequent corrections to the arXiv versions.
 </p>
 
-<ol>
-  <li><strong>Min-Max construction of anisotropic minimal surfaces with genus bound</strong> (2026) with <em><a href="https://sites.google.com/view/antonioderosa/home">Antonio De Rosa</a></em> and <em><a href="https://lwmath.github.io">Ling Wang</a></em>. <span class="paper-links"><a href="./files/anisotropic_Meeks_Simon_Yau.pdf">pdf</a> &amp; <a href="https://arxiv.org/abs/2606.30098">arxiv</a> &amp; <a href="https://cvgmt.sns.it/paper/7832/">cvgmt</a>.</span></li>
-  <li><strong>Carleman estimates for stationary Q-valued maps: a variational approach</strong> (2025) with <em><a href="https://sites.google.com/ucsd.edu/lucaspolaor">Luca Spolaor</a></em>. <span class="paper-links"><a href="./files/Carleman-Q-Valued.pdf">pdf</a> &amp; <a href="https://arxiv.org/abs/2508.14388">arxiv</a> &amp; <a href="https://cvgmt.sns.it/paper/7260/">cvgmt</a>.</span></li>
-  <li><strong>Decay of excess for the abelian Higgs model</strong> (2024) with <em><a href="https://cvgmt.sns.it/person/22/">Guido de Philippis</a></em> and <em><a href="https://poisson.phc.dm.unipi.it/~pigati/">Alessandro Pigati</a></em>. <em>J. Eur. Math. Soc. (JEMS), Online First, 2026.</em> <span class="paper-links"><a href="./files/Decay-YMH.pdf">pdf</a> &amp; <a href="https://arxiv.org/abs/2405.13953">arxiv</a> &amp; <a href="https://cvgmt.sns.it/paper/6586/">cvgmt</a> &amp; <a href="https://doi.org/10.4171/jems/1819">Journal</a>.</span></li>
-  <li><strong>Quantitative stability for Yang-Mills-Higgs instantons in two dimensions</strong> (2023). <em>Arch. Ration. Mech. Anal. 248, 88.</em> <span class="paper-links"><a href="./files/Stability-YMH.pdf">pdf</a> &amp; <a href="https://arxiv.org/abs/2310.04866">arxiv</a> &amp; <a href="https://cvgmt.sns.it/paper/6237/">cvgmt</a> &amp; <a href="https://doi.org/10.1007/s00205-024-02035-2">Journal</a>.</span></li>
-  <li><strong>New weighted inequalities on two-manifolds</strong> (2023). <em>Rend. Sem. Mat. Univ. Padova, Online First, 2026.</em> <span class="paper-links"><a href="./files/inequalities.pdf">pdf</a> &amp; <a href="https://arxiv.org/abs/2310.04868">arxiv</a> &amp; <a href="https://cvgmt.sns.it/paper/6236/">cvgmt</a> &amp; <a href="https://ems.press/journals/rsmup/articles/14299943">Journal</a>.</span></li>
+<ol class="paper-list">
+  <li class="paper-entry">
+    <h2 class="paper-title"><a href="./files/anisotropic_Meeks_Simon_Yau.pdf">Min-Max construction of anisotropic minimal surfaces with genus bound</a></h2>
+    <p class="paper-meta">(2026) with <em><a href="https://sites.google.com/view/antonioderosa/home">Antonio De Rosa</a></em> and <em><a href="https://lwmath.github.io">Ling Wang</a></em>.</p>
+    <div class="paper-links"><a href="./files/anisotropic_Meeks_Simon_Yau.pdf">PDF</a> <span aria-hidden="true">·</span> <a href="https://arxiv.org/abs/2606.30098">arXiv</a> <span aria-hidden="true">·</span> <a href="https://cvgmt.sns.it/paper/7832/">cvGMT</a></div>
+    <details class="paper-abstract">
+      <summary>Abstract<span class="sr-only">: Min-Max construction of anisotropic minimal surfaces with genus bound</span></summary>
+      <div class="abstract-content"><p>We establish an anisotropic analogue of the celebrated theorem of Meeks–Simon–Yau: every minimizing sequence of surfaces within a fixed isotopy class converges to a smooth stable anisotropic minimal surface, with genus lower semicontinuity. This result also strengthens White’s foundational existence theory for anisotropic minimal disks. As an application, we develop an anisotropic Simon–Smith min–max theory. In every closed 3-manifold, we construct anisotropic min–max sequences within fixed isotopy classes whose limits are stable anisotropic minimal surfaces that are smooth except possibly at a single point. If the integrand satisfies either an ellipticity bound or a C<sup>3</sup>-pinching condition, we remove the singular point by proving two independent removable singularity theorems for anisotropic minimal surfaces that are smooth and stable away from finitely many points. These removable singularity results also allow to remove the singularities arising in the anisotropic Almgren–Pitts min–max construction in 3-manifolds of De Philippis–De Rosa and in its multiparameter variants.</p></div>
+    </details>
+  </li>
+  <li class="paper-entry">
+    <h2 class="paper-title"><a href="./files/Carleman-Q-Valued.pdf">Carleman estimates for stationary Q-valued maps: a variational approach</a></h2>
+    <p class="paper-meta">(2025) with <em><a href="https://sites.google.com/ucsd.edu/lucaspolaor">Luca Spolaor</a></em>.</p>
+    <div class="paper-links"><a href="./files/Carleman-Q-Valued.pdf">PDF</a> <span aria-hidden="true">·</span> <a href="https://arxiv.org/abs/2508.14388">arXiv</a> <span aria-hidden="true">·</span> <a href="https://cvgmt.sns.it/paper/7260/">cvGMT</a></div>
+    <details class="paper-abstract">
+      <summary>Abstract<span class="sr-only">: Carleman estimates for stationary Q-valued maps: a variational approach</span></summary>
+      <div class="abstract-content"><p>We prove a Carleman-type estimate for Dirichlet-stationary multivalued functions and apply it to give a different proof of the optimal dimension of the singular set of Dir-minimizing multivalued functions, originally due to Almgren and to De Lellis–Spadaro.</p></div>
+    </details>
+  </li>
+  <li class="paper-entry">
+    <h2 class="paper-title"><a href="./files/Decay-YMH.pdf">Decay of excess for the abelian Higgs model</a></h2>
+    <p class="paper-meta">(2024) with <em><a href="https://cvgmt.sns.it/person/22/">Guido de Philippis</a></em> and <em><a href="https://poisson.phc.dm.unipi.it/~pigati/">Alessandro Pigati</a></em>. <span class="paper-publication"><em>J. Eur. Math. Soc. (JEMS), Online First, 2026.</em></span></p>
+    <div class="paper-links"><a href="./files/Decay-YMH.pdf">PDF</a> <span aria-hidden="true">·</span> <a href="https://arxiv.org/abs/2405.13953">arXiv</a> <span aria-hidden="true">·</span> <a href="https://cvgmt.sns.it/paper/6586/">cvGMT</a> <span aria-hidden="true">·</span> <a href="https://doi.org/10.4171/jems/1819">Journal</a></div>
+    <details class="paper-abstract">
+      <summary>Abstract<span class="sr-only">: Decay of excess for the abelian Higgs model</span></summary>
+      <div class="abstract-content"><p>In this article we prove that entire critical points (u, ∇) of the self-dual U(1)-Yang–Mills–Higgs functional E<sub>1</sub>, with normalized energy</p><div class="abstract-equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mfrac><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>(</mo><mi>u</mi><mo>,</mo><mi>∇</mi><mo>;</mo><msub><mi>B</mi><mi>R</mi></msub><mo>)</mo></mrow><mrow><mn>2</mn><mi>π</mi><msub><mi>ω</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub><msup><mi>R</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msup></mrow></mfrac><mo>≔</mo><mfrac><mrow><msub><mo>∫</mo><msub><mi>B</mi><mi>R</mi></msub></msub><mo>[</mo><msup><mrow><mo>|</mo><mi>∇</mi><mi>u</mi><mo>|</mo></mrow><mn>2</mn></msup><mo>+</mo><mfrac><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><msup><mrow><mo>|</mo><mi>u</mi><mo>|</mo></mrow><mn>2</mn></msup><mo>)</mo></mrow><mn>2</mn></msup><mn>4</mn></mfrac><mo>+</mo><msup><mrow><mo>|</mo><msub><mi>F</mi><mi>∇</mi></msub><mo>|</mo></mrow><mn>2</mn></msup><mo>]</mo></mrow><mrow><mn>2</mn><mi>π</mi><msub><mi>ω</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub><msup><mi>R</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msup></mrow></mfrac><mo>≤</mo><mn>1</mn><mo>+</mo><mrow><mi>τ</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow></mrow></math></div><p>for all R &gt; 0, have unique blow-down. Moreover, we show that they are two-dimensional in ambient dimension 2 ≤ n ≤ 4, or in any dimension n ≥ 2 assuming that (u, ∇) is a local minimizer, thus establishing a co-dimension-two analogue of Savin’s theorem. The main ingredient is an Allard-type improvement of flatness.</p></div>
+    </details>
+  </li>
+  <li class="paper-entry">
+    <h2 class="paper-title"><a href="./files/Stability-YMH.pdf">Quantitative stability for Yang-Mills-Higgs instantons in two dimensions</a></h2>
+    <p class="paper-meta">(2023). <span class="paper-publication"><em>Arch. Ration. Mech. Anal. 248, 88.</em></span></p>
+    <div class="paper-links"><a href="./files/Stability-YMH.pdf">PDF</a> <span aria-hidden="true">·</span> <a href="https://arxiv.org/abs/2310.04866">arXiv</a> <span aria-hidden="true">·</span> <a href="https://cvgmt.sns.it/paper/6237/">cvGMT</a> <span aria-hidden="true">·</span> <a href="https://doi.org/10.1007/s00205-024-02035-2">Journal</a></div>
+    <details class="paper-abstract">
+      <summary>Abstract<span class="sr-only">: Quantitative stability for Yang-Mills-Higgs instantons in two dimensions</span></summary>
+      <div class="abstract-content"><p>We prove that if an N-vortex pair nearly minimizes the Yang-Mills-Higgs energy, then it is second order close to a minimizer. First we use new weighted inequalities in two dimensions and compactness arguments to show stability for sections with some regularity. Second we define a selection principle using a penalized functional and by elliptic regularity and smooth perturbation of complex polynomials, we generalize the stability to all nearly minimizing pairs. With the same method, we also prove the analogous second order stability for nearly minimizing pairs on nontrivial line bundles over arbitrary compact smooth surfaces.</p></div>
+    </details>
+  </li>
+  <li class="paper-entry">
+    <h2 class="paper-title"><a href="./files/inequalities.pdf">New weighted inequalities on two-manifolds</a></h2>
+    <p class="paper-meta">(2023). <span class="paper-publication"><em>Rend. Sem. Mat. Univ. Padova, Online First, 2026.</em></span></p>
+    <div class="paper-links"><a href="./files/inequalities.pdf">PDF</a> <span aria-hidden="true">·</span> <a href="https://arxiv.org/abs/2310.04868">arXiv</a> <span aria-hidden="true">·</span> <a href="https://cvgmt.sns.it/paper/6236/">cvGMT</a> <span aria-hidden="true">·</span> <a href="https://ems.press/journals/rsmup/articles/14299943">Journal</a></div>
+    <details class="paper-abstract">
+      <summary>Abstract<span class="sr-only">: New weighted inequalities on two-manifolds</span></summary>
+      <div class="abstract-content"><p>We establish a new class of weighted L<sup>2</sup> Poincaré and elliptic functional inequalities on smooth two-manifolds with explicit constants, for a family of weights satisfying a differential equation. This family includes, in particular, weights comparable to products of positive powers of the geodesic distance to finitely many points. Our primary motivation is the derivation of estimates associated with a weighted Hodge decomposition for one-forms.</p></div>
+    </details>
+  </li>
 </ol>
 
-<h2>Communication of AI-discovered proofs</h2>
- <p class="message">
-  Here is the list of papers with AI-discovered proofs through interactions and direction from the authors. In each paper new ideas and insights were digested and rewritten in the attempt to communicate them to the broder mathematical community.
+<h2 class="papers-section-title">Communication of AI-discovered proofs</h2>
+<p class="papers-intro">
+  These papers present proofs discovered through interactions with AI under the authors’ direction. The authors checked and rewrote the proofs to communicate their ideas and insights to the broader mathematical community.
 </p>
-<ol>
-  <li><strong>Integral curvature estimates and geodesic limits for stable abelian Higgs fields</strong> (2026) with <em><a href="https://marco-badran.github.io/">Marco Badran</a></em> and <em><a href="https://guaraco.com">Marco A. M. Guaraco</a></em>. <span class="paper-links"><a href="./files/Stable_YMH_3d.pdf">pdf</a> &amp; <a href="https://arxiv.org/abs/2609.21893">arxiv</a> &amp; <a href="https://cvgmt.sns.it/paper/7998/">cvgmt</a>.</span></li>
+<ol class="paper-list">
+  <li class="paper-entry">
+    <h3 class="paper-title"><a href="./files/Stable_YMH_3d.pdf">Integral curvature estimates and geodesic limits for stable abelian Higgs fields</a></h3>
+    <p class="paper-meta">(2026) with <em><a href="https://marco-badran.github.io/">Marco Badran</a></em> and <em><a href="https://guaraco.com">Marco A. M. Guaraco</a></em>.</p>
+    <div class="paper-links"><a href="./files/Stable_YMH_3d.pdf">PDF</a> <span aria-hidden="true">·</span> <a href="https://arxiv.org/abs/2609.21893">arXiv</a> <span aria-hidden="true">·</span> <a href="https://cvgmt.sns.it/paper/7998/">cvGMT</a></div>
+    <details class="paper-abstract">
+      <summary>Abstract<span class="sr-only">: Integral curvature estimates and geodesic limits for stable abelian Higgs fields</span></summary>
+      <div class="abstract-content"><p>We prove that, on closed three-manifolds, the limit interface of a sequence of stable abelian Higgs critical points with uniformly bounded energy is a finite union of smooth closed immersed geodesics, possibly with multiplicity and self-intersections. This follows from an integral estimate for the diffuse curvature, derived from an integral bound on the discrepancy.</p></div>
+    </details>
+  </li>
 </ol>
 
 </article>
 
-<article class="post">
-  <center>
-    <figure>
-    <img width="100%" src="./files/Drawing.JPG" alt="Aria Halavati">
-    <figcaption>A drawing; AI generated animation in <a href="./drawing.html">this link</a>.</figcaption>
+<section class="paper-drawing" aria-labelledby="drawing-title">
+  <figure>
+    <a href="./drawing.html" aria-label="Explore the drawing animation">
+      <img src="./files/Drawing.JPG" alt="A hand-drawn sphere surrounded by beads and twisting threads" loading="lazy">
+    </a>
+    <figcaption>
+      <h2 id="drawing-title">Drawing in motion</h2>
+      <p>A drawing, brought to life through an AI-generated animation.</p>
+      <a href="./drawing.html">Explore the animation <span aria-hidden="true">→</span></a>
+    </figcaption>
   </figure>
-  </center>
-</article>
+</section>
 
       </main>
     </div>
