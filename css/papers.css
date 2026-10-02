@@ -3,9 +3,7 @@
   margin-bottom: .75rem;
 }
 
-.papers-intro {
-  color: #626975;
-  line-height: 1.65;
+.papers-page .message {
   margin-bottom: 1.5rem;
 }
 
@@ -186,7 +184,7 @@
     margin-bottom: 1.1rem;
   }
 
-  .papers-intro {
+  .papers-page .message {
     margin-bottom: 1.35rem;
   }
 }
