@@ -8,27 +8,16 @@
 }
 
 .paper-list {
-  padding-left: 0;
+  padding-left: 1.4rem;
   margin-bottom: 0;
-  list-style: none;
-  counter-reset: paper;
 }
 
 .paper-entry {
-  position: relative;
-  counter-increment: paper;
-  padding: .75rem .9rem .75rem 2.2rem;
-  margin-bottom: .75rem;
-  border: 1px solid #d6dfe9;
-  border-radius: .3rem;
-  background: rgba(255, 255, 255, .9);
+  padding-left: .25rem;
+  margin-bottom: 1.1rem;
 }
 
-.paper-entry::before {
-  content: counter(paper) ".";
-  position: absolute;
-  top: .9rem;
-  left: .8rem;
+.paper-entry::marker {
   color: #7c8795;
   font-size: .9rem;
 }
@@ -191,12 +180,8 @@
 
 @media (max-width: 38rem) {
   .paper-entry {
-    padding-right: .75rem;
-    padding-left: 2rem;
-  }
-
-  .paper-entry::before {
-    left: .65rem;
+    padding-left: .15rem;
+    margin-bottom: 1.1rem;
   }
 
   .papers-page .message {
