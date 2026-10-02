@@ -1,12 +1,4 @@
 /* Bibliography styling stays local to the Papers page. */
-.papers-page .minimal-surface-background {
-  opacity: .55;
-}
-
-.papers-page .container.content {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .94) 8%, rgba(255, 255, 255, .94) 92%, rgba(255, 255, 255, 0));
-}
-
 .papers-page .page-title {
   margin-bottom: .75rem;
 }
