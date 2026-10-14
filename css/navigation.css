@@ -1,0 +1,21 @@
+/* Resources remains a link; the adjacent disclosure opens the two guides. */
+.nav-main { position: relative; z-index: 10; }
+.nav-main .nav-resources { position: relative; display: inline-flex; align-items: center; vertical-align: middle; }
+.nav-main .nav-resources > a { padding-right: .15rem; }
+.resource-menu summary { display: flex; align-items: center; justify-content: center; width: 2rem; min-height: 44px; color: #263663; cursor: pointer; list-style: none; }
+.resource-menu summary::-webkit-details-marker { display: none; }
+.resource-menu summary svg { width: 12px; height: 12px; transition: transform .15s ease; }
+.resource-menu[open] summary svg { transform: rotate(180deg); }
+.nav-main .resource-dropdown { position: absolute; top: 100%; right: 0; display: block; width: 16rem; max-width: calc(100vw - 2rem); margin: 0; padding: .4rem; border: 1px solid #dde3e9; border-radius: 4px; background: #fff; box-shadow: 0 12px 28px #17375618; text-align: left; white-space: normal; }
+.nav-main .resource-dropdown li { display: block; }
+.nav-main .resource-dropdown a { padding: .7rem .8rem; font-size: .95rem; border-radius: 2px; }
+.nav-main .resource-dropdown a:hover, .nav-main .resource-dropdown a:focus-visible { background: #f0f4f8; }
+.nav-main [aria-current="page"] { color: #0a3b76; font-weight: 700; }
+.nav-main a:focus-visible, .resource-menu summary:focus-visible { outline: 2px solid #365f92; outline-offset: -3px; }
+@media (max-width: 38rem) {
+  .nav-main > ul { display: flex; align-items: center; justify-content: center; }
+  .nav-main > ul > li > a { padding-left: clamp(.35rem, 2vw, .8rem); padding-right: clamp(.35rem, 2vw, .8rem); }
+  .nav-main .nav-resources > a { padding-right: 0; }
+  .resource-menu summary { width: 1.65rem; }
+}
+@media (prefers-reduced-motion: reduce) { .resource-menu summary svg { transition: none; } }

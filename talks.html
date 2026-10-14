@@ -31,16 +31,27 @@
   <link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://ariahala.github.io/apple-touch-icon.png">
   
   <link rel="alternate" type="application/atom+xml" title="Aria Halavati" href="https://ariahala.github.io/atom.xml">
+  <link rel="stylesheet" href="/css/navigation.css?v=20261014">
+  <script src="/js/navigation.js?v=20261014" defer></script>
 </head>
 
 
   <body>
-    <nav class="nav-main">
+    <nav class="nav-main" aria-label="Main navigation">
       <ul>
         <li class="hvr-underline-reveal"><a href="https://ariahala.github.io/talks.html">Talks</a></li>
         <li class="hvr-underline-reveal"><a href="https://ariahala.github.io/papers.html">Papers</a></li>
         <li class="logo"><a class="hvr-ripple-out" href="https://ariahala.github.io/">A</a></li>
-        <li class="hvr-underline-reveal"><a href="https://ariahala.github.io/resources.html">Resources</a></li>
+        <li class="nav-resources">
+          <a href="/resources.html">Resources</a>
+          <details class="resource-menu">
+            <summary aria-label="Resources submenu"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2 4 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></summary>
+            <ul class="resource-dropdown">
+              <li><a href="/geometric-measure-theory.html">Geometric Measure Theory</a></li>
+              <li><a href="/ginzburg-landau.html">Ginzburg Landau</a></li>
+            </ul>
+          </details>
+        </li>
         <li class="hvr-underline-reveal"><a href="https://ariahala.github.io/CV/Aria_Halavati_s_CV.pdf">CV</a></li>
       </ul>
     </nav>

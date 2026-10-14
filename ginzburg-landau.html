@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An annotated guide to Ginzburg–Landau vortices, abelian Higgs theory and geometric limits, with connections to Aria Halavati’s work.">
+    <title>Ginzburg–Landau Theory · Aria Halavati</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700">
+    <link rel="stylesheet" href="/css/style.css?v=20261002-fix">
+    <link rel="stylesheet" href="/css/minimal-surfaces.css?v=20261002-fix">
+    <link rel="stylesheet" href="/css/navigation.css?v=20261014">
+    <link rel="stylesheet" href="/css/resources.css?v=20261014">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="alternate" type="application/atom+xml" title="Aria Halavati" href="/atom.xml">
+    <script src="/js/navigation.js?v=20261014" defer></script>
+    <script src="/js/drawing-surfaces.js?v=20261002-crowded" defer></script>
+    <script src="/js/minimal-surfaces.js?v=20261002-smooth-scroll" defer></script>
+    
+  </head>
+  <body class="resource-guide">
+    <nav class="nav-main" aria-label="Main navigation">
+      <ul>
+        <li class="hvr-underline-reveal"><a href="/talks.html">Talks</a></li>
+        <li class="hvr-underline-reveal"><a href="/papers.html">Papers</a></li>
+        <li class="logo"><a class="hvr-ripple-out" href="/" aria-label="Aria Halavati home">A</a></li>
+        <li class="nav-resources">
+          <a href="/resources.html">Resources</a>
+          <details class="resource-menu">
+            <summary aria-label="Resources submenu"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2 4 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></summary>
+            <ul class="resource-dropdown">
+              <li><a href="/geometric-measure-theory.html">Geometric Measure Theory</a></li>
+              <li><a href="/ginzburg-landau.html">Ginzburg Landau</a></li>
+            </ul>
+          </details>
+        </li>
+        <li class="hvr-underline-reveal"><a href="/CV/Aria_Halavati_s_CV.pdf">CV</a></li>
+      </ul>
+    </nav>
+    <div class="container content">
+      <main id="main-content">
+        <nav class="resource-breadcrumb" aria-label="Breadcrumb"><a href="/resources.html">Resources</a><span aria-hidden="true">/</span><span aria-current="page">GL</span></nav>
+        <header class="guide-header"><p class="resource-eyebrow">A reading guide</p><h1>Ginzburg–Landau Theory</h1><p>A route from planar vortices to higher-dimensional concentration, self-dual abelian Higgs fields and minimal submanifolds.</p></header>
+        <div class="guide-layout">
+          <nav class="guide-toc" aria-label="On this page"><h2>On this page</h2><ol><li><a href="#start">Where to start</a></li><li><a href="#planar-vortices">Planar vortices</a></li><li><a href="#jacobians">Jacobians & convergence</a></li><li><a href="#higher-dimensions">η-ellipticity & higher dimensions</a></li><li><a href="#magnetic">Magnetic GL</a></li><li><a href="#abelian-higgs">Self-dual abelian Higgs</a></li><li><a href="#geometric-limits">Geometric limits</a></li><li><a href="#my-work">Connections with my work</a></li></ol><a class="other-guide" href="/geometric-measure-theory.html">Geometric Measure Theory ↗</a></nav>
+          <div class="guide-body">
+            <section class="reading-start" id="start" aria-labelledby="start-title"><h2 id="start-title">Where to start</h2><p>Begin with <a href="#planar-vortices">Bethuel–Brezis–Hélein</a> for the planar vortex picture, then study <a href="#jacobians">Jacobians and energy bounds</a> before moving to <a href="#higher-dimensions">higher dimensions</a>.</p>
+<p>For the direction closest to my work, follow <a href="#abelian-higgs">self-dual abelian Higgs vortices</a> into <a href="#geometric-limits">Pigati–Stern and Parise–Pigati–Stern</a>, then the <a href="#my-work">stability and excess-decay papers</a>. The magnetic GL monograph is a complementary route.</p>
+<p class="prerequisites"><strong>Useful background:</strong> Sobolev spaces, elliptic PDE, variational methods and degree theory; differential forms and connections for abelian Higgs, and currents and varifolds for geometric limits.</p></section>
+            <section class="guide-section" id="planar-vortices" aria-labelledby="planar-vortices-title">
+            <h2 id="planar-vortices-title"><span class="section-number" aria-hidden="true">01</span>Non-magnetic GL: planar vortices</h2>
+            <p class="section-intro">In the planar non-magnetic model, the order parameter is a complex-valued map. Its modulus is driven toward one, while topological constraints force zeros around which the phase winds.</p>
+            <ul class="reading-list"><li class="reading-entry">
+                <h3><a href="https://link.springer.com/book/10.1007/978-1-4612-0287-5">Ginzburg–Landau Vortices</a></h3>
+                <p class="reading-meta">Fabrice Bethuel, Haïm Brezis &amp; Frédéric Hélein <span aria-hidden="true">·</span> Starting point · Graduate monograph</p>
+                <p class="reading-description">The classical starting point for two-dimensional vortices. The book develops the asymptotics of minimizers, the emergence of point defects and the renormalized energy governing their interaction. It is a great place to begin learning the theory.</p>
+                <div class="reading-links"><a href="https://link.springer.com/book/10.1007/978-1-4612-0287-5" aria-label="Publisher: Ginzburg–Landau Vortices">Publisher</a></div>
+              </li></ul>
+            
+          </section><section class="guide-section" id="jacobians" aria-labelledby="jacobians-title">
+            <h2 id="jacobians-title"><span class="section-number" aria-hidden="true">02</span>Jacobians &amp; variational convergence</h2>
+            <p class="section-intro">The Jacobian records the vorticity in a form that survives weak convergence. It connects energy estimates for maps with measures and integral currents, and makes the link with GMT precise.</p>
+            <ul class="reading-list"><li class="reading-entry">
+                <h3><a href="https://soner.princeton.edu/sites/g/files/toruqf4216/files/soner/files/48-soner-calcvar-02.pdf">The Jacobian and the Ginzburg–Landau Energy</a></h3>
+                <p class="reading-meta">Robert L. Jerrard &amp; Halil Mete Soner <span aria-hidden="true">·</span> Foundational paper</p>
+                <p class="reading-description">A central reference for compactness of Jacobians and lower bounds for the rescaled Ginzburg–Landau energy. Read this after the planar vortex picture to understand how vorticity can be controlled without locating each zero individually.</p>
+                <div class="reading-links"><a href="https://soner.princeton.edu/sites/g/files/toruqf4216/files/soner/files/48-soner-calcvar-02.pdf" aria-label="PDF: The Jacobian and the Ginzburg–Landau Energy">PDF</a></div>
+              </li><li class="reading-entry">
+                <h3><a href="https://cvgmt.sns.it/paper/1333/">Variational Convergence for Functionals of Ginzburg–Landau Type</a></h3>
+                <p class="reading-meta">Giovanni Alberti, Sisto Baldo &amp; Giandomenico Orlandi <span aria-hidden="true">·</span> Research paper · GL and integral currents</p>
+                <p class="reading-description">A variational convergence framework relating Ginzburg–Landau-type energies to area. The formulation in terms of integral currents explains how topological singularities of maps give rise to geometric objects of higher codimension.</p>
+                <div class="reading-links"><a href="https://cvgmt.sns.it/paper/1333/" aria-label="cvGMT: Variational Convergence for Functionals of Ginzburg–Landau Type">cvGMT</a> <a href="https://cvgmt.sns.it/media/doc/paper/1333/abo2.pdf" aria-label="PDF: Variational Convergence for Functionals of Ginzburg–Landau Type">PDF</a></div>
+              </li></ul>
+            
+          </section><section class="guide-section" id="higher-dimensions" aria-labelledby="higher-dimensions-title">
+            <h2 id="higher-dimensions-title"><span class="section-number" aria-hidden="true">03</span>η-ellipticity &amp; higher dimensions</h2>
+            <p class="section-intro">η-ellipticity is a small-energy principle: sufficiently small normalized energy forces the modulus to stay away from zero in a smaller region. It is a key tool for locating the concentration set as the core scale tends to zero.</p>
+            <ul class="reading-list"><li class="reading-entry">
+                <h3><a href="https://cvgmt.sns.it/paper/1514/">Asymptotics for the Ginzburg–Landau Equation in Arbitrary Dimensions</a></h3>
+                <p class="reading-meta">Fabrice Bethuel, Haïm Brezis &amp; Giandomenico Orlandi <span aria-hidden="true">·</span> Research paper · Elliptic GL</p>
+                <p class="reading-description">A foundational reference for the higher-dimensional equation at logarithmic energy scale. It develops the estimates and concentration analysis behind the passage from vortices to codimension-two geometric limits.</p>
+                <div class="reading-links"><a href="https://cvgmt.sns.it/paper/1514/" aria-label="cvGMT: Asymptotics for the Ginzburg–Landau Equation in Arbitrary Dimensions">cvGMT</a></div>
+              </li></ul>
+            <aside class="research-connection"><h3>GMT background for this step</h3><p>The language of <a href="/geometric-measure-theory.html#currents">currents</a> describes vorticity and topology, while <a href="/geometric-measure-theory.html#varifolds">varifolds</a> describe energy concentration and stationarity. Keeping these two roles in view helps when comparing the non-magnetic and abelian Higgs limits.</p></aside>
+          </section><section class="guide-section" id="magnetic" aria-labelledby="magnetic-title">
+            <h2 id="magnetic-title"><span class="section-number" aria-hidden="true">04</span>Magnetic Ginzburg–Landau</h2>
+            <p class="section-intro">Introducing a gauge field changes the energy balance and allows one to study applied magnetic fields and vortex distributions. This is a useful companion to the non-magnetic theory, with its own scaling regimes.</p>
+            <ul class="reading-list"><li class="reading-entry">
+                <h3><a href="https://link.springer.com/book/10.1007/978-0-8176-4550-2">Vortices in the Magnetic Ginzburg–Landau Model</a></h3>
+                <p class="reading-meta">Étienne Sandier &amp; Sylvia Serfaty <span aria-hidden="true">·</span> Graduate monograph</p>
+                <p class="reading-description">A systematic treatment of the magnetic model. The chapters on the vortex-ball construction and Jacobian estimates are especially useful for learning the energy methods; later chapters study applied-field regimes and vortex distributions.</p>
+                <div class="reading-links"><a href="https://link.springer.com/book/10.1007/978-0-8176-4550-2" aria-label="Publisher: Vortices in the Magnetic Ginzburg–Landau Model">Publisher</a></div>
+              </li></ul>
+            
+          </section><section class="guide-section" id="abelian-higgs" aria-labelledby="abelian-higgs-title">
+            <h2 id="abelian-higgs-title"><span class="section-number" aria-hidden="true">05</span>Abelian Higgs: self-dual vortices</h2>
+            <p class="section-intro">Here the focus is the self-dual U(1) Yang–Mills–Higgs model. The unknowns are a section of a Hermitian line bundle and a connection. In two dimensions, the Bogomolny decomposition leads to first-order vortex equations and a topological energy bound.</p>
+            <ul class="reading-list"><li class="reading-entry">
+                <h3><a href="https://link.springer.com/article/10.1007/BF01197552">Arbitrary N-Vortex Solutions to the First Order Ginzburg–Landau Equations</a></h3>
+                <p class="reading-meta">Clifford Henry Taubes <span aria-hidden="true">·</span> Foundational paper · Planar self-dual vortices</p>
+                <p class="reading-description">The basic existence and uniqueness result for prescribed vortex zeros in the plane, with multiplicities. This supplies the two-dimensional family of minimizers that underlies quantitative stability questions.</p>
+                <div class="reading-links"><a href="https://link.springer.com/article/10.1007/BF01197552" aria-label="Journal: Arbitrary N-Vortex Solutions to the First Order Ginzburg–Landau Equations">Journal</a></div>
+              </li></ul>
+            <aside class="research-connection"><h3>From classification to stability</h3><p>Once the minimizing vortices are understood, one can ask how close a pair with almost minimal energy must be to that family. This is the question in my <a href="#quantitative-stability">quantitative stability paper</a> below.</p></aside>
+          </section><section class="guide-section" id="geometric-limits" aria-labelledby="geometric-limits-title">
+            <h2 id="geometric-limits-title"><span class="section-number" aria-hidden="true">06</span>From abelian Higgs to minimal submanifolds</h2>
+            <p class="section-intro">For the self-dual rescaling, bounded energy leads to a codimension-two limit. This differs from the logarithmic normalization in non-magnetic GL: the gauge field and the coupling are essential to the comparison.</p>
+            <ul class="reading-list"><li class="reading-entry">
+                <h3><a href="https://arxiv.org/abs/1905.13726">Minimal Submanifolds from the Abelian Higgs Model</a></h3>
+                <p class="reading-meta">Alessandro Pigati &amp; Daniel Stern <span aria-hidden="true">·</span> Research paper · Critical points and varifolds</p>
+                <p class="reading-description">Shows that, as the core scale tends to zero, uniformly energy-bounded critical points have subsequential normalized energy measures given by stationary integral varifolds of codimension two. A natural bridge from gauge-theoretic PDE to the compactness and regularity questions of GMT.</p>
+                <div class="reading-links"><a href="https://arxiv.org/abs/1905.13726" aria-label="arXiv: Minimal Submanifolds from the Abelian Higgs Model">arXiv</a></div>
+              </li><li class="reading-entry">
+                <h3><a href="https://arxiv.org/abs/2103.14615">Convergence of the Self-Dual U(1)-Yang–Mills–Higgs Energies to the (n−2)-Area Functional</a></h3>
+                <p class="reading-meta">Davide Parise, Alessandro Pigati &amp; Daniel Stern <span aria-hidden="true">·</span> Research paper · Γ-convergence</p>
+                <p class="reading-description">Complements the critical-point picture with Γ-convergence to codimension-two area. The gauge-invariant Jacobian converges to an integral cycle, and the recovery construction realizes cycles in the prescribed homology class.</p>
+                <div class="reading-links"><a href="https://arxiv.org/abs/2103.14615" aria-label="arXiv: Convergence of the Self-Dual U(1)-Yang–Mills–Higgs Energies to the (n−2)-Area Functional">arXiv</a></div>
+              </li></ul>
+            
+          </section><section class="guide-section" id="my-work" aria-labelledby="my-work-title">
+            <h2 id="my-work-title"><span class="section-number" aria-hidden="true">07</span>Connections with my work</h2>
+            <p class="section-intro">The references above lead to two related questions: quantitative control near planar vortices, and improvement of flatness for higher-dimensional abelian Higgs fields.</p>
+            <ul class="reading-list"><li class="reading-entry" id="quantitative-stability">
+                <h3><a href="/files/Stability-YMH.pdf">Quantitative Stability for Yang–Mills–Higgs Instantons in Two Dimensions</a></h3>
+                <p class="reading-meta">Aria Halavati <span aria-hidden="true">·</span> My work · Quantitative stability</p>
+                <p class="reading-description">After Taubes’s classification, the next question is quantitative: does a small energy deficit control the distance to a minimizing vortex? This paper establishes a quadratic stability estimate for nearly minimizing pairs, including a corresponding result on compact surfaces.</p>
+                <div class="reading-links"><a href="/files/Stability-YMH.pdf" aria-label="PDF: Quantitative Stability for Yang–Mills–Higgs Instantons in Two Dimensions">PDF</a> <a href="https://arxiv.org/abs/2310.04866" aria-label="arXiv: Quantitative Stability for Yang–Mills–Higgs Instantons in Two Dimensions">arXiv</a> <a href="/files/YMH_stability_slides.pdf" aria-label="Slides: Quantitative Stability for Yang–Mills–Higgs Instantons in Two Dimensions">Slides</a></div>
+              </li><li class="reading-entry">
+                <h3><a href="/files/Decay-YMH.pdf">Decay of Excess for the Abelian Higgs Model</a></h3>
+                <p class="reading-meta">Guido De Philippis, Aria Halavati &amp; Alessandro Pigati <span aria-hidden="true">·</span> My work · Allard-type improvement of flatness</p>
+                <p class="reading-description">Building on the codimension-two limit, we prove an Allard-type improvement of flatness and apply it to entire critical points with normalized energy close to that of a multiplicity-one plane. The results include uniqueness of blow-down and two-dimensionality under the dimension or minimizing assumptions in the paper.</p>
+                <div class="reading-links"><a href="/files/Decay-YMH.pdf" aria-label="PDF: Decay of Excess for the Abelian Higgs Model">PDF</a> <a href="https://arxiv.org/abs/2405.13953" aria-label="arXiv: Decay of Excess for the Abelian Higgs Model">arXiv</a> <a href="/files/Decay_of_excess_for_the_abelian_Higgs_slides.pdf" aria-label="Slides: Decay of Excess for the Abelian Higgs Model">Slides</a></div>
+              </li><li class="reading-entry">
+                <h3><a href="/files/inequalities.pdf">New Weighted Inequalities on Two-Manifolds</a></h3>
+                <p class="reading-meta">Aria Halavati <span aria-hidden="true">·</span> Related analytic tools</p>
+                <p class="reading-description">Weighted Poincaré and elliptic inequalities on surfaces, motivated by estimates for a weighted Hodge decomposition. These provide analytic background for the stability questions above.</p>
+                <div class="reading-links"><a href="/files/inequalities.pdf" aria-label="PDF: New Weighted Inequalities on Two-Manifolds">PDF</a> <a href="https://arxiv.org/abs/2310.04868" aria-label="arXiv: New Weighted Inequalities on Two-Manifolds">arXiv</a></div>
+              </li></ul>
+            <aside class="research-connection"><h3>Thesis &amp; talks</h3><p>For more context, see my <a href="/files/Thesis-Aria-H.pdf">PhD thesis</a> and the slides on <a href="/files/Diffuse_approximations_of_minimal_surfaces.pdf">diffuse approximations of minimal surfaces</a>. The <a href="/papers.html">Papers page</a> includes abstracts and publication details.</p></aside>
+          </section>
+            <div class="guide-footer"><a href="/resources.html">← All resources</a><a href="#main-content">Back to top ↑</a></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
