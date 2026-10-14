@@ -113,7 +113,11 @@
   }
   function setPaused(value) {
     paused = value; previous = 0;
-    if (toggle) { toggle.textContent = paused ? 'Resume motion' : 'Pause motion'; toggle.setAttribute('aria-pressed', String(paused)); }
+    if (toggle) {
+      document.getElementById('resource-motion-icon').setAttribute('d', paused ? 'M6 4 19 12 6 20Z' : 'M6 4h4v16H6zM14 4h4v16h-4z');
+      document.getElementById('resource-motion-label').textContent = paused ? 'Resume motion' : 'Pause motion';
+      toggle.setAttribute('aria-pressed', String(paused));
+    }
     if (paused) { cancelAnimationFrame(frame); frame = 0; }
     else schedule();
   }

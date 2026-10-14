@@ -1,4 +1,5 @@
 /* A quiet reading room, with two mathematical illustrations at its entrance. */
+.ui-icon { display: inline-block; width: 1em; height: 1em; vertical-align: -.12em; flex-shrink: 0; }
 .resources-landing { background: #fbfcfd; }
 .resources-landing .container { max-width: 67rem; }
 .resources-landing .nav-main { margin-bottom: 3.3rem; }
