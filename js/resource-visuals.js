@@ -14,33 +14,94 @@
   let drawn = 0;
   let dark = document.documentElement.dataset.theme === 'dark';
 
-  function catenoid(ctx, time) {
-    const tilt = .92 + .17 * Math.sin(time * .24);
-    const turn = -.38 + .14 * Math.sin(time * .19);
-    function point(u, v) {
-      // Exact catenoid X(u,v) = (cosh(v) cos(u), cosh(v) sin(u), v).
-      const x = Math.cosh(v) * Math.cos(u);
-      const y = Math.cosh(v) * Math.sin(u);
-      const z = v;
-      const yy = y * Math.cos(tilt) - z * Math.sin(tilt);
-      const zz = y * Math.sin(tilt) + z * Math.cos(tilt);
-      return [260 + 92 * (x * Math.cos(turn) + zz * Math.sin(turn)), 200 - 92 * yy, zz * Math.cos(turn) - x * Math.sin(turn)];
+  // Exact minimal parametrizations. Geometry is sampled once per page load.
+  const surfaces = [
+    { id: 'catenoid', name: 'Catenoid', description: 'a minimal surface joining two circles',
+      u: [0, tau], v: [-1.2, 1.2], columns: 96, rows: 24, stride: 4, periodic: true,
+      point: (u, v) => [Math.cosh(v) * Math.cos(u), Math.cosh(v) * Math.sin(u), v] },
+    { id: 'helicoid', name: 'Helicoid', description: 'a spiraling minimal surface',
+      u: [-1.25 * Math.PI, 1.25 * Math.PI], v: [-1.8, 1.8], columns: 96, rows: 24, stride: 4,
+      point: (u, v) => [v * Math.cos(u), v * Math.sin(u), .65 * u] },
+    { id: 'enneper', name: 'Enneper’s surface', description: 'a minimal immersion with a curved saddle shape',
+      u: [0, tau], v: [0, 1.45], columns: 96, rows: 24, stride: 4, periodic: true,
+      point: (angle, r) => {
+        const u = r * Math.cos(angle), v = r * Math.sin(angle);
+        return [u - u ** 3 / 3 + u * v * v, v - v ** 3 / 3 + u * u * v, u * u - v * v];
+      } },
+    { id: 'scherk', name: 'Scherk’s surface', description: 'a saddle-shaped minimal graph',
+      u: [-1.3, 1.3], v: [-1.3, 1.3], columns: 48, rows: 24, stride: 2,
+      point: (u, v) => [u, v, Math.log(Math.cos(v) / Math.cos(u))] }
+  ];
+
+  function chooseSurface() {
+    let previousSurface;
+    try { previousSurface = sessionStorage.getItem('resource-minimal-surface'); } catch (_) {}
+    const choices = surfaces.filter(surface => surface.id !== previousSurface);
+    const surface = choices[Math.floor(Math.random() * choices.length)];
+    try { sessionStorage.setItem('resource-minimal-surface', surface.id); } catch (_) {}
+    return surface;
+  }
+
+  function surfaceMesh(surface) {
+    const { columns, rows, stride, point, u, v } = surface;
+    const vertices = [], edges = [];
+    for (let j = 0; j <= rows; j++) for (let i = 0; i <= columns; i++) {
+      vertices.push(point(u[0] + (u[1] - u[0]) * i / columns, v[0] + (v[1] - v[0]) * j / rows));
     }
-    const segments = [];
-    function curve(fn, count, major) {
-      let a = fn(0);
-      for (let i = 1; i <= count; i++) {
-        const b = fn(i / count);
-        segments.push({ a, b, major, depth: (a[2] + b[2]) / 2 });
-        a = b;
+    function edge(a, b, major) {
+      if (Math.hypot(...vertices[a].map((value, axis) => value - vertices[b][axis])) > 1e-9) edges.push({ a, b, major });
+    }
+    for (let j = 0; j <= rows; j++) for (let i = 0; i < columns; i++) {
+      const a = j * (columns + 1) + i;
+      edge(a, a + 1, j === 0 || j === rows || j === rows / 2);
+    }
+    for (let i = 0; i <= columns; i += stride) {
+      if (surface.periodic && i === columns) continue;
+      for (let j = 0; j < rows; j++) {
+        const a = j * (columns + 1) + i;
+        edge(a, a + columns + 1, !surface.periodic && (i === 0 || i === columns));
       }
     }
-    for (let j = 0; j <= 20; j++) curve(t => point(t * tau, -1.2 + 2.4 * j / 20), 80, j === 0 || j === 20 || j === 10);
-    for (let i = 0; i < 36; i++) curve(t => point(i * tau / 36, -1.2 + 2.4 * t), 40, false);
-    segments.sort((a, b) => a.depth - b.depth);
-    for (const { a, b, major, depth } of segments) {
-      const ink = dark ? '159,191,232' : '38,80,123';
-      ctx.strokeStyle = `rgba(${ink},${(major ? .52 : .12) + .27 * (depth + 2) / 4})`;
+    const center = [0, 1, 2].map(axis => (Math.min(...vertices.map(p => p[axis])) + Math.max(...vertices.map(p => p[axis]))) / 2);
+    for (const p of vertices) for (let axis = 0; axis < 3; axis++) p[axis] -= center[axis];
+    const radius = Math.max(...vertices.map(p => Math.hypot(...p)));
+    // A single scale preserves the surface and fits every rotation inside the card.
+    for (const p of vertices) for (let axis = 0; axis < 3; axis++) p[axis] /= radius;
+    return { vertices, edges };
+  }
+
+  function projectSurface(mesh, time) {
+    const tilt = .92 + .17 * Math.sin(time * .24);
+    const turn = -.38 + .14 * Math.sin(time * .19);
+    const projected = mesh.vertices.map(([x, y, z]) => {
+      const yy = y * Math.cos(tilt) - z * Math.sin(tilt);
+      const zz = y * Math.sin(tilt) + z * Math.cos(tilt);
+      return [260 + 180 * (x * Math.cos(turn) + zz * Math.sin(turn)), 200 - 180 * yy, zz * Math.cos(turn) - x * Math.sin(turn)];
+    });
+    return mesh.edges.map(({ a, b, major }) => ({ a: projected[a], b: projected[b], major,
+      depth: (projected[a][2] + projected[b][2]) / 2 })).sort((a, b) => a.depth - b.depth);
+  }
+
+  const surfaceOpacity = (major, depth) => (major ? .52 : .12) + .27 * (depth + 1) / 2;
+  const surfaceCanvas = canvases.find(canvas => canvas.dataset.resourceVisual === 'minimal-surface');
+  const surface = surfaceCanvas ? chooseSurface() : null;
+  const mesh = surface ? surfaceMesh(surface) : null;
+  if (surfaceCanvas) {
+    surfaceCanvas.dataset.surface = surface.id;
+    surfaceCanvas.setAttribute('aria-label', `A slowly turning wireframe of ${surface.name}, ${surface.description}. A different surface is chosen on refresh.`);
+    document.getElementById('resource-surface-label').textContent = surface.name;
+    // Keep the no-motion/print fallback and its caption consistent with the selection.
+    const paths = projectSurface(mesh, 0).map(({ a, b, major, depth }) =>
+      `<path d="M${a[0].toFixed(2)},${a[1].toFixed(2)}L${b[0].toFixed(2)},${b[1].toFixed(2)}" stroke-opacity="${surfaceOpacity(major, depth).toFixed(3)}" stroke-width="${major ? 1.35 : .65}"/>`).join('');
+    const fallback = surfaceCanvas.parentElement.querySelector('img');
+    fallback.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 400"><title>${surface.name}</title><g fill="none" stroke="#26507b">${paths}</g></svg>`);
+    fallback.alt = `A wireframe of ${surface.name}, ${surface.description}.`;
+  }
+
+  function minimalSurface(ctx, time) {
+    const ink = dark ? '159,191,232' : '38,80,123';
+    for (const { a, b, major, depth } of projectSurface(mesh, time)) {
+      ctx.strokeStyle = `rgba(${ink},${surfaceOpacity(major, depth)})`;
       ctx.lineWidth = major ? 1.35 : .65;
       ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
     }
@@ -133,7 +194,7 @@
   function render() {
     for (const { canvas, context: ctx } of scenes) {
       ctx.clearRect(0, 0, 520, 400);
-      if (canvas.dataset.resourceVisual === 'catenoid') catenoid(ctx, elapsed);
+      if (canvas.dataset.resourceVisual === 'minimal-surface') minimalSurface(ctx, elapsed);
       else vortex(ctx, elapsed);
       canvas.parentElement.querySelector('img').hidden = true;
       canvas.removeAttribute('aria-hidden');

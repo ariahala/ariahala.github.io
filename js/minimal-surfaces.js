@@ -223,6 +223,21 @@
   }
 
   function updateFade() {
+    // Align the soft reading strip with the actual column, including its gutters.
+    if (document.body.dataset.surfaceFade === 'content') {
+      const bounds = document.querySelector('.container.content main').getBoundingClientRect();
+      const left = clamp((bounds.left - 12) / width, 0, 1);
+      const right = clamp((bounds.right + 12) / width, left, 1);
+      const feather = 48 / width;
+      marginFade = context.createLinearGradient(0, 0, width, 0);
+      marginFade.addColorStop(0, '#000');
+      marginFade.addColorStop(Math.max(0, left - feather), '#000');
+      marginFade.addColorStop(left, 'rgba(0,0,0,.1)');
+      marginFade.addColorStop(right, 'rgba(0,0,0,.1)');
+      marginFade.addColorStop(Math.min(1, right + feather), '#000');
+      marginFade.addColorStop(1, '#000');
+      return;
+    }
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 17;
     marginFade = context.createLinearGradient(0, 0, width, 0);
     if (width <= 58 * rem) {
