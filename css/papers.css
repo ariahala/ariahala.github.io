@@ -18,7 +18,7 @@
 }
 
 .paper-entry::marker {
-  color: #7c8795;
+  color: var(--site-muted);
   font-size: .9rem;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .paper-title a {
-  color: #0a3b76;
+  color: var(--site-blue);
 }
 
 .paper-meta {
@@ -40,7 +40,7 @@
 .paper-publication {
   display: block;
   margin-top: .2rem;
-  color: #626975;
+  color: var(--site-muted);
 }
 
 .paper-links {
@@ -52,11 +52,11 @@
 }
 
 .paper-links a {
-  color: #365f92;
+  color: var(--site-link);
 }
 
 .paper-links span {
-  color: #87909b;
+  color: var(--site-muted);
 }
 
 .paper-abstract {
@@ -65,7 +65,7 @@
 
 .paper-abstract summary {
   width: fit-content;
-  color: #365f92;
+  color: var(--site-link);
   cursor: pointer;
   font-size: .9rem;
   list-style: none;
@@ -93,10 +93,10 @@
 .abstract-content {
   margin-top: .65rem;
   padding: .15rem 0 .15rem 1rem;
-  border-left: 2px solid #dbe3ed;
+  border-left: 2px solid var(--site-rule);
   font-size: .95rem;
   line-height: 1.65;
-  color: #515761;
+  color: var(--site-ink);
 }
 
 .abstract-content p:last-child {
@@ -113,8 +113,8 @@
 .papers-page .papers-section-title {
   margin-top: 2.25rem;
   padding-top: 1.25rem;
-  border-top: 1px solid #dce2e9;
-  color: #0a3b76;
+  border-top: 1px solid var(--site-rule);
+  color: var(--site-blue);
   font-size: 1.4rem;
   line-height: 1.35;
 }
@@ -126,7 +126,7 @@
 .paper-drawing {
   margin: 3rem 0 4rem;
   padding-top: 2.5rem;
-  border-top: 1px solid #dce2e9;
+  border-top: 1px solid var(--site-rule);
 }
 
 .paper-drawing figure {
@@ -145,23 +145,23 @@
 .paper-drawing h2 {
   margin: 0 0 .35rem;
   font-size: 1.15rem;
-  color: #0a3b76;
+  color: var(--site-blue);
 }
 
 .paper-drawing p {
-  color: #626975;
+  color: var(--site-muted);
   font-size: .9rem;
   margin-bottom: .5rem;
 }
 
 .paper-drawing figcaption > a {
-  color: #365f92;
+  color: var(--site-link);
   font-size: .9rem;
 }
 
 .papers-page a:focus-visible,
 .paper-abstract summary:focus-visible {
-  outline: 2px solid #365f92;
+  outline: 2px solid var(--site-link);
   outline-offset: 4px;
   border-radius: 2px;
 }
