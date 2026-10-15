@@ -1,0 +1,204 @@
+% Polished academic CV for Aria Halavati
+% Updated 15 October 2026. Open in Codex's LaTeX editor for the PDF preview.
+% Also compatible with: pdflatex Aria_Halavati_s_CV.tex
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[letterpaper,margin=0.74in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{cvgray}{gray}{0.30}
+\definecolor{cvlightgray}{gray}{0.68}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlist[itemize]{leftmargin=1.2em, topsep=0.15em, itemsep=0.10em, parsep=0pt}
+\setlist[enumerate]{leftmargin=1.6em, topsep=0.15em, itemsep=0.35em, parsep=0pt}
+\renewcommand{\labelitemi}{\raisebox{0.15ex}{\scriptsize$\bullet$}}
+
+\titleformat{\section}
+  {\large\scshape\color{cvgray}\raggedright}
+  {}{0pt}{}
+  [\vspace{-0.55em}\textcolor{cvlightgray}{\titlerule}]
+\titlespacing*{\section}{0pt}{1.05em}{0.55em}
+
+\newcommand{\headername}[1]{%
+  {\fontsize{24}{28}\selectfont\scshape #1}\par
+}
+
+\newcommand{\contactline}[1]{%
+  {\small\color{cvgray}#1}\par
+}
+
+\newcommand{\entry}[4]{%
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{1.55in}@{}}
+    \textbf{#1} & #2 \\
+    \textit{#3} & #4 \\
+  \end{tabularx}
+}
+
+\newcommand{\subentry}[3]{%
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{1.55in}@{}}
+    \textbf{#1} & #3 \\
+    #2 & \\
+  \end{tabularx}
+}
+
+\newcommand{\dateditem}[3]{%
+  \textbf{#1}\if\relax\detokenize{#2}\relax\else\,\textbar\,#2\fi & #3 \\
+}
+
+\newcommand{\course}[2]{#1 & #2 \\
+}
+
+\begin{document}
+
+\begin{center}
+  \headername{Aria Halavati}
+  \vspace{0.25em}
+  \contactline{\href{mailto:aria.halavati@cims.nyu.edu}{aria.halavati@cims.nyu.edu} \&   \href{mailto:aria.halavati@unibocconi.it}{aria.halavati@unibocconi.it}\quad\textbar\quad
+  \href{https://ariahala.github.io}{ariahala.github.io}}
+\end{center}
+
+\vspace{0.35em}
+
+\section*{Employment}
+
+\entry{Universit\`a Bocconi}{Milan, Italy}{Postdoc, funded by ERC Project ANGEVA}{Sep 2025--Present}
+\begin{itemize}
+  \item Mentor: Antonio De Rosa
+\end{itemize}
+
+\section*{Education}
+
+\entry{Courant Institute of Mathematical Sciences, New York University}{New York, NY}{Ph.D. in Pure Mathematics}{Sep 2020--May 2025}
+\begin{itemize}
+  \item Advisors: Guido De Philippis and Fang-Hua Lin
+  \item Research area: Geometric measure theory and partial differential equations
+\end{itemize}
+
+\vspace{0.25em}
+\entry{Department of Mathematics, Sharif University of Technology}{Tehran, Iran}{B.S. in Mathematics}{2015--2019}
+\begin{itemize}
+  \item Advisor: Morteza Fotouhi
+\end{itemize}
+
+\section*{Publications and Preprints}
+
+\begin{enumerate}
+  \raggedright
+  \item \textbf{The anisotropic Weyl law and Grassmannian equidistribution}. \\
+  Antonio De Rosa, Aria Halavati. Preprint (2026), \href{https://arxiv.org/abs/2610.18599}{arXiv:2610.18599}.
+  \item \textbf{On Cylindrical singularities of minimal hypersurfaces}. \\
+  Aria Halavati, Luca Spolaor. Preprint (2026), \href{https://arxiv.org/abs/2610.10754}{arXiv:2610.10754}.
+  \item \textbf{Integral curvature estimates and geodesic limits for stable abelian Higgs fields}. \\
+  Marco Badran, Marco A.\,M. Guaraco, Aria Halavati. Preprint (2026), \href{https://arxiv.org/abs/2609.21893}{arXiv:2609.21893}.
+  \item \textbf{Min-Max construction of anisotropic minimal surfaces with genus bound}. \\
+  Antonio De Rosa, Aria Halavati, Ling Wang. Preprint (2026), \href{https://arxiv.org/abs/2606.30098}{arXiv:2606.30098}.
+  \item \textbf{Carleman estimates for stationary Q-valued maps: a variational approach}. \\
+  Aria Halavati, Luca Spolaor. Preprint (2025), \href{https://arxiv.org/abs/2508.14388}{arXiv:2508.14388}.
+  % Publisher: https://ems.press/journals/jems/articles/14300021
+  \item \textbf{Decay of excess for the abelian Higgs model}. \\
+  Guido De Philippis, Aria Halavati, Alessandro Pigati. \emph{J. Eur. Math. Soc.}, Online First (2026). \href{https://doi.org/10.4171/JEMS/1819}{doi:10.4171/JEMS/1819}.
+  % Publisher: https://doi.org/10.1007/s00205-024-02035-2
+  \item \textbf{Quantitative stability of Yang--Mills--Higgs instantons in two dimensions}. \\
+  Aria Halavati. \emph{Arch. Ration. Mech. Anal.} \textbf{248}, Article 88 (2024). \href{https://doi.org/10.1007/s00205-024-02035-2}{doi:10.1007/s00205-024-02035-2}.
+  % Publisher: https://ems.press/journals/rsmup/articles/14299943
+  \item \textbf{New weighted inequalities on two-manifolds}. \\
+  Aria Halavati. \emph{Rend. Sem. Mat. Univ. Padova}, Online First (2026). \href{https://doi.org/10.4171/RSMUP/206}{doi:10.4171/RSMUP/206}.
+\end{enumerate}
+
+\section*{Invited Talks}
+
+\begingroup
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{0pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-1.45in-2\tabcolsep\relax}>{\raggedleft\arraybackslash}p{1.45in}@{}}
+\endfirsthead
+\multicolumn{2}{@{}l}{\textit{Invited Talks (continued)}}\\[0.25em]
+\endhead
+% Event details also recorded in talks.html; Westlake is upcoming as of 15 October 2026.
+\dateditem{Westlake Winter School in Geometric Measure Theory}{Westlake University, Hangzhou, China; invited individual lecture (upcoming)}{18--22 Jan 2027}
+\dateditem{Oberwolfach Workshop on Calculus of Variations}{Mathematisches Forschungsinstitut Oberwolfach, Germany; speaker}{30 Aug--4 Sep 2026}
+\dateditem{Scuola Normale Superiore di Pisa}{Pisa, Italy}{5--7 Nov 2025}
+\dateditem{UNAM}{Juriquilla, Quer\'etaro, Mexico}{6--8 Aug 2025}
+\dateditem{cSplash, Courant Institute}{New York, NY}{5 Apr 2025}
+\dateditem{UT Austin Analysis Seminar}{Austin, TX}{12 Mar 2025}
+\dateditem{Princeton DGGA Seminar}{Princeton, NJ}{26 Feb 2025}
+\dateditem{MIT Analysis Seminar}{Boston, MA}{12 Nov 2024}
+\dateditem{UC San Diego Geometry Seminar}{San Diego, CA}{31 Oct 2024}
+\dateditem{Stanford Geometry Seminar}{Stanford, CA}{16 Oct 2024}
+\dateditem{Virtual Analysis and PDE Seminar, hosted by UC Irvine}{Online}{3 Oct 2024}
+\dateditem{Cornell Analysis Seminar}{Ithaca, NY}{9 Sep 2024}
+\dateditem{Courant Geometric Analysis Seminar}{New York, NY}{6 Sep 2024}
+\dateditem{University of Toronto Student PDE Seminar}{Online}{14 Feb 2024}
+\end{longtable}
+\endgroup
+
+\section*{Workshops and Conferences}
+
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{1.45in}@{}}
+\dateditem{International geometric analysis conference in Milan II}{Bocconi University, Milan, Italy}{8--12 Jun 2026}
+\dateditem{SLMath -- Geometry and Analysis of Special Structures on Manifolds}{Berkeley, CA}{18--22 Nov 2024}
+\dateditem{SLMath -- Recent Progress on Geometric Analysis and Riemannian Geometry}{Berkeley, CA}{21--25 Oct 2024}
+\dateditem{Joint Mathematics Meetings 2024}{San Francisco, CA}{3--6 Jan 2024}
+\dateditem{Oberwolfach PDE Workshop 2330 (Invited)}{Germany}{23--29 Jul 2023}
+\end{tabularx}
+
+\section*{Awards and Honors}
+
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{0.75in}@{}}
+\textbf{Peter Lax Fellowship}, awarded to an outstanding Ph.D. student, Courant Institute & 2022 \\
+\textbf{First Prize}, International Mathematical Competition, UCL & 2017 \\
+\textbf{Gold Medal}, International Mathematical Olympiad & 2015 \\
+\textbf{Gold Medal}, Iran's National Mathematical Olympiad & 2014 \\
+\end{tabularx}
+
+\section*{Academic Service}
+
+\textbf{Reviewer for:} \emph{Canadian Journal of Mathematics}; \emph{Journal of Functional Analysis}; \emph{Annales de l'Institut Henri Poincar\'e, Analyse Non Lin\'eaire}; \emph{Adv. Math.}
+
+\vspace{0.35em}
+\textbf{Co-organized:} Courant Graduate Student/Postdoc Seminar; social chapter of the Courant student organization; social climate survey administered for Courant student feedback; geometric measure theory reading group at Courant.
+
+\section*{Teaching}
+
+\subentry{SLMath, Berkeley}{Teaching Assistant for the summer school \emph{Special Geometric Structures and Analysis}, St. Mary's College}{17--28 Jul 2024}
+\begin{itemize}
+  \item An introduction to geometric measure theory.
+\end{itemize}
+
+\vspace{0.25em}
+\textbf{Courant Institute of Mathematical Sciences, NYU.} Teaching Assistant.\par\vspace{0.15em}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{1.95in}@{}}
+\course{Calculus I}{Fall 2019; Fall 2021}
+\course{Math for Econ}{Spring 2020}
+\course{Great Ideas in Math for non-math majors}{Spring 2020}
+\course{Linear Algebra}{Fall 2022; Spring 2025}
+\course{Probability and Statistics}{Spring 2022}
+\course{Analysis}{Fall 2023; Spring 2024; Fall 2024}
+\end{tabularx}
+
+\vspace{0.25em}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{1.55in}@{}}
+\textbf{Young Scholars Club, Tehran, Iran.} Tutoring Iran's IMO team & 2016 \\
+\textbf{Kerman, Iran.} Math classes for students in my hometown; 7 national and 1 IMO medal from my class & 2014--2015 \\
+\end{tabularx}
+
+\section*{Skills}
+
+\textbf{Languages:} Persian, English.\\
+\textbf{Programming:} Python, TensorFlow, PyTorch, C++, MATLAB.\\
+\textbf{Music:} Piano, Setar, Guitar, Oud.
+
+\end{document}
