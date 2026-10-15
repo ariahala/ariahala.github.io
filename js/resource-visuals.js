@@ -12,6 +12,7 @@
   let previous = 0;
   let elapsed = 0;
   let drawn = 0;
+  let dark = document.documentElement.dataset.theme === 'dark';
 
   function catenoid(ctx, time) {
     const tilt = .92 + .17 * Math.sin(time * .24);
@@ -38,7 +39,8 @@
     for (let i = 0; i < 36; i++) curve(t => point(i * tau / 36, -1.2 + 2.4 * t), 40, false);
     segments.sort((a, b) => a.depth - b.depth);
     for (const { a, b, major, depth } of segments) {
-      ctx.strokeStyle = `rgba(38,80,123,${(major ? .52 : .12) + .27 * (depth + 2) / 4})`;
+      const ink = dark ? '159,191,232' : '38,80,123';
+      ctx.strokeStyle = `rgba(${ink},${(major ? .52 : .12) + .27 * (depth + 2) / 4})`;
       ctx.lineWidth = major ? 1.35 : .65;
       ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
     }
@@ -51,11 +53,11 @@
     // The time dependence is a global phase rotation, not a simulated PDE flow.
     for (let i = 0; i < 90; i++) {
       const theta = i * tau / 90;
-      ctx.fillStyle = `hsla(${hue(theta + phase)},38%,53%,.08)`;
+      ctx.fillStyle = `hsla(${hue(theta + phase)},38%,53%,${dark ? .12 : .08})`;
       ctx.beginPath(); ctx.moveTo(260, 200);
       ctx.arc(260, 200, 165, -theta - tau / 90, -theta); ctx.closePath(); ctx.fill();
     }
-    ctx.strokeStyle = '#b7b1a53f'; ctx.lineWidth = .8;
+    ctx.strokeStyle = dark ? '#b8b1c14f' : '#b7b1a53f'; ctx.lineWidth = .8;
     for (const r of [55, 110, 165]) {
       ctx.beginPath(); ctx.arc(260, 200, r, 0, tau); ctx.stroke();
     }
@@ -69,16 +71,16 @@
         const dx = Math.cos(theta), dy = -Math.sin(theta);
         const cx = 260 + x, cy = 200 - y;
         const ex = cx + dx * length / 2, ey = cy + dy * length / 2;
-        ctx.strokeStyle = `hsla(${hue(theta)},38%,39%,${.4 + .5 * amplitude})`;
+        ctx.strokeStyle = `hsla(${hue(theta)},${dark ? '52%,68%' : '38%,39%'},${.4 + .5 * amplitude})`;
         ctx.lineWidth = 1.3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
         ctx.beginPath(); ctx.moveTo(cx - dx * length / 2, cy - dy * length / 2); ctx.lineTo(ex, ey);
         ctx.moveTo(ex - dx * 3.5 - dy * 2.5, ey - dy * 3.5 + dx * 2.5); ctx.lineTo(ex, ey);
         ctx.lineTo(ex - dx * 3.5 + dy * 2.5, ey - dy * 3.5 - dx * 2.5); ctx.stroke();
       }
     }
-    ctx.fillStyle = '#fcfaf6'; ctx.beginPath(); ctx.arc(260, 200, 9, 0, tau); ctx.fill();
-    ctx.strokeStyle = '#8d7f6d'; ctx.lineWidth = 1; ctx.stroke();
-    ctx.fillStyle = '#8d7f6d'; ctx.beginPath(); ctx.arc(260, 200, 2, 0, tau); ctx.fill();
+    ctx.fillStyle = dark ? '#28262a' : '#fcfaf6'; ctx.beginPath(); ctx.arc(260, 200, 9, 0, tau); ctx.fill();
+    ctx.strokeStyle = dark ? '#c2b4a3' : '#8d7f6d'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillStyle = dark ? '#c2b4a3' : '#8d7f6d'; ctx.beginPath(); ctx.arc(260, 200, 2, 0, tau); ctx.fill();
   }
 
   function render() {
@@ -90,6 +92,11 @@
       canvas.removeAttribute('aria-hidden');
     }
   }
+  // Repaint immediately on a mode change, including while motion is paused.
+  new MutationObserver(() => {
+    dark = document.documentElement.dataset.theme === 'dark';
+    render();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   function schedule() {
     if (!frame && !paused && visible && !document.hidden) frame = requestAnimationFrame(tick);
   }
