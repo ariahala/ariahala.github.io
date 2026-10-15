@@ -46,41 +46,88 @@
     }
   }
 
+  function createVortices() {
+    const counts = [2, 3, 4, 5, 6];
+    let previousCount;
+    try { previousCount = Number(sessionStorage.getItem('resource-vortex-count')); } catch (_) {}
+    const choices = counts.filter(count => count !== previousCount);
+    const count = choices[Math.floor(Math.random() * choices.length)];
+    try { sessionStorage.setItem('resource-vortex-count', String(count)); } catch (_) {}
+    const cores = [];
+    for (let i = 0; i < count; i++) {
+      let best, clearance = -1;
+      // Bounded rejection sampling keeps cores distinct and inside the disk.
+      for (let attempt = 0; attempt < 200; attempt++) {
+        const angle = Math.random() * tau, radius = 118 * Math.sqrt(Math.random());
+        const candidate = { x: radius * Math.cos(angle), y: radius * Math.sin(angle) };
+        const distance = Math.min(...cores.map(core => Math.hypot(candidate.x - core.x, candidate.y - core.y)));
+        if (distance > clearance) { best = candidate; clearance = distance; }
+        if (distance >= 64) break;
+      }
+      cores.push(best);
+    }
+    return cores;
+  }
+
+  // Prescribed degree-one factors, not a numerical GL solution:
+  // u(z) = exp(i phase) product_j (z-a_j) / sqrt(|z-a_j|² + epsilon²).
+  function vortexField(x, y, cores) {
+    let angle = 0, amplitude = 1;
+    for (const core of cores) {
+      const dx = x - core.x, dy = y - core.y, radius = Math.hypot(dx, dy);
+      angle += Math.atan2(dy, dx);
+      amplitude *= radius / Math.hypot(radius, 20);
+    }
+    return { angle, amplitude };
+  }
+
+  const vortexCanvas = canvases.find(canvas => canvas.dataset.resourceVisual === 'vortex');
+  const cores = vortexCanvas ? createVortices() : [];
+  const wash = [], arrows = [];
+  if (vortexCanvas) {
+    vortexCanvas.setAttribute('aria-label', `An illustrative field with ${cores.length} degree-one vortices undergoing a global phase rotation. Arrow direction and color show phase; arrow length shows amplitude. The vortex count and positions change on refresh. This is not a numerical PDE solution.`);
+    // Cache the spatial field once; resizing, pausing and theme changes keep its zeros.
+    for (let y = -165; y < 165; y += 5) for (let x = -165; x < 165; x += 5) {
+      if (Math.hypot(x + 2.5, y + 2.5) < 169) wash.push({ x, y, ...vortexField(x + 2.5, y + 2.5, cores) });
+    }
+    for (let y = -150; y <= 150; y += 20) for (let x = -150; x <= 150; x += 20) {
+      if (Math.hypot(x, y) < 158) arrows.push({ x, y, ...vortexField(x, y, cores) });
+    }
+  }
+
   function vortex(ctx, time) {
     const phase = time * .18;
     const hue = angle => ((angle / tau * 360 + 225) % 360 + 360) % 360;
-    // An illustrative degree-one field u = r/sqrt(r²+epsilon²) exp(i(theta+phase)).
-    // The time dependence is a global phase rotation, not a simulated PDE flow.
-    for (let i = 0; i < 90; i++) {
-      const theta = i * tau / 90;
-      ctx.fillStyle = `hsla(${hue(theta + phase)},38%,53%,${dark ? .12 : .08})`;
-      ctx.beginPath(); ctx.moveTo(260, 200);
-      ctx.arc(260, 200, 165, -theta - tau / 90, -theta); ctx.closePath(); ctx.fill();
+    // Only the global phase rotates; the sampled vortex configuration stays fixed.
+    ctx.save();
+    ctx.beginPath(); ctx.arc(260, 200, 165, 0, tau); ctx.clip();
+    for (const sample of wash) {
+      ctx.fillStyle = `hsla(${hue(sample.angle + phase)},38%,53%,${(dark ? .15 : .1) * sample.amplitude})`;
+      ctx.fillRect(260 + sample.x, 200 - sample.y - 5, 5, 5);
     }
+    ctx.restore();
     ctx.strokeStyle = dark ? '#b8b1c14f' : '#b7b1a53f'; ctx.lineWidth = .8;
-    for (const r of [55, 110, 165]) {
-      ctx.beginPath(); ctx.arc(260, 200, r, 0, tau); ctx.stroke();
+    ctx.beginPath(); ctx.arc(260, 200, 165, 0, tau); ctx.stroke();
+    for (const { x, y, angle, amplitude } of arrows) {
+      const theta = angle + phase;
+      const length = 13 * amplitude, head = 3.5 * amplitude, wing = 2.5 * amplitude;
+      const dx = Math.cos(theta), dy = -Math.sin(theta);
+      const cx = 260 + x, cy = 200 - y;
+      const ex = cx + dx * length / 2, ey = cy + dy * length / 2;
+      ctx.strokeStyle = `hsla(${hue(theta)},${dark ? '52%,68%' : '38%,39%'},${.4 + .5 * amplitude})`;
+      ctx.lineWidth = 1.3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(cx - dx * length / 2, cy - dy * length / 2); ctx.lineTo(ex, ey);
+      ctx.moveTo(ex - dx * head - dy * wing, ey - dy * head + dx * wing); ctx.lineTo(ex, ey);
+      ctx.lineTo(ex - dx * head + dy * wing, ey - dy * head - dx * wing); ctx.stroke();
     }
-    for (let y = -154; y <= 154; y += 22) {
-      for (let x = -154; x <= 154; x += 22) {
-        const r = Math.hypot(x, y);
-        if (r > 164 || r === 0) continue;
-        const theta = Math.atan2(y, x) + phase;
-        const amplitude = r / Math.sqrt(r * r + 29 * 29);
-        const length = 13 * amplitude;
-        const dx = Math.cos(theta), dy = -Math.sin(theta);
-        const cx = 260 + x, cy = 200 - y;
-        const ex = cx + dx * length / 2, ey = cy + dy * length / 2;
-        ctx.strokeStyle = `hsla(${hue(theta)},${dark ? '52%,68%' : '38%,39%'},${.4 + .5 * amplitude})`;
-        ctx.lineWidth = 1.3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-        ctx.beginPath(); ctx.moveTo(cx - dx * length / 2, cy - dy * length / 2); ctx.lineTo(ex, ey);
-        ctx.moveTo(ex - dx * 3.5 - dy * 2.5, ey - dy * 3.5 + dx * 2.5); ctx.lineTo(ex, ey);
-        ctx.lineTo(ex - dx * 3.5 + dy * 2.5, ey - dy * 3.5 - dx * 2.5); ctx.stroke();
-      }
+    for (const core of cores) {
+      const x = 260 + core.x, y = 200 - core.y;
+      ctx.fillStyle = dark ? '#28262a' : '#fcfaf6';
+      ctx.beginPath(); ctx.arc(x, y, 7, 0, tau); ctx.fill();
+      ctx.strokeStyle = dark ? '#c2b4a3' : '#8d7f6d'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.fillStyle = dark ? '#c2b4a3' : '#8d7f6d';
+      ctx.beginPath(); ctx.arc(x, y, 2, 0, tau); ctx.fill();
     }
-    ctx.fillStyle = dark ? '#28262a' : '#fcfaf6'; ctx.beginPath(); ctx.arc(260, 200, 9, 0, tau); ctx.fill();
-    ctx.strokeStyle = dark ? '#c2b4a3' : '#8d7f6d'; ctx.lineWidth = 1; ctx.stroke();
-    ctx.fillStyle = dark ? '#c2b4a3' : '#8d7f6d'; ctx.beginPath(); ctx.arc(260, 200, 2, 0, tau); ctx.fill();
   }
 
   function render() {
