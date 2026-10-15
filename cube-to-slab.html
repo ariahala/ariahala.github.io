@@ -23,8 +23,7 @@
 @media(prefers-reduced-motion:reduce){button{transition:none}}
 </style>
 <style>
-/* The surrounding controls follow the site theme; diagram canvases retain
-   a light ground so the construction's semantic colors work in either mode. */
+/* The controls and illustrations share the selected day/night palette. */
 .cube-page {
   --paper: var(--site-paper);
   --white: var(--site-paper);
@@ -32,10 +31,82 @@
   --muted: var(--site-muted);
   --line: var(--site-rule);
   --shadow: none;
+  --diagram-paper: #fffefa;
+  --diagram-ground: #fafbf5;
+  --diagram-domain: #edf1e7;
+  --diagram-grid: #e9ece4;
+  --diagram-guide: #b7c1b7;
+  --diagram-partition: #9baa98;
+  --diagram-border: #8a9d8d;
+  --diagram-cycle: #235c5d;
+  --diagram-seam: #b96c43;
+  --diagram-label: #69816f;
+  --diagram-swatch: #d8e6e2;
+  --diagram-swatch-border: #b7d2c8;
+  --teal: var(--diagram-cycle);
+  --copper: var(--diagram-seam);
+  --slab-1: #377a79;
+  --slab-2: #b9844e;
+  --slab-3: #7386ac;
+  --slab-4: #aa7182;
+  --slab-5: #71976b;
+  --slab-6: #928064;
+  --slab-7: #658ba5;
+  --slab-8: #9c8cba;
+  --slab-9: #aa785e;
+  --slab-10: #6b9b90;
+  --slab-11: #b19c52;
+  --slab-12: #6e799b;
+  --slab-13: #9e7e91;
+  --slab-14: #809969;
+  --slab-15: #7b969e;
+  --slab-16: #a18d74;
+  --slab-17: #8d79a0;
+  --slab-18: #668e73;
+  --slab-19: #ad877f;
+  --slab-20: #8d9960;
   color: var(--site-ink);
   background: var(--site-paper);
   font-family: "Source Sans Pro", sans-serif;
   border-top: 5px solid var(--site-blue);
+}
+/* CSS recolors existing SVGs without rebuilding drawings or stopping motion.
+   Screen-only overrides keep printed diagrams on the light palette. */
+@media screen {
+  :root[data-theme="dark"] .cube-page {
+    --diagram-paper: #202732;
+    --diagram-ground: #202732;
+    --diagram-domain: #2b3540;
+    --diagram-grid: #354353;
+    --diagram-guide: #607080;
+    --diagram-partition: #7f909e;
+    --diagram-border: #8195a4;
+    --diagram-cycle: #8fd0c9;
+    --diagram-seam: #edb082;
+    --diagram-label: #aeb9c8;
+    --diagram-swatch: #35514f;
+    --diagram-swatch-border: #719e99;
+    --slab-1: #7da9a8;
+    --slab-2: #d2af8c;
+    --slab-3: #a4b0c9;
+    --slab-4: #c8a3ae;
+    --slab-5: #a3bb9f;
+    --slab-6: #b8ac9a;
+    --slab-7: #9bb4c4;
+    --slab-8: #bfb4d2;
+    --slab-9: #c8a796;
+    --slab-10: #9fbeb7;
+    --slab-11: #ccbf8f;
+    --slab-12: #a1a8be;
+    --slab-13: #c0abb8;
+    --slab-14: #acbd9e;
+    --slab-15: #a9bbc0;
+    --slab-16: #c2b5a5;
+    --slab-17: #b5a8c1;
+    --slab-18: #9cb6a4;
+    --slab-19: #cab1ac;
+    --slab-20: #b5bd98;
+  }
 }
 .cube-page .ui-icon { display: inline-block; width: 1em; height: 1em; vertical-align: -.12em; flex-shrink: 0; }
 .cube-page .lab { max-width: 1160px; padding: 0 32px 28px; }
@@ -109,10 +180,11 @@
 .cube-page summary:focus-visible, .cube-page svg:focus-visible,
 .cube-page .cube-drawing:focus-within { outline-color: var(--site-link); }
 .cube-page #assemblySvg, .cube-page .cube-drawing, .cube-page .stage svg {
-  background: #fffefa;
-  color-scheme: light;
+  background: var(--diagram-paper);
+  color-scheme: inherit;
 }
 .cube-page #assemblySvg { border-radius: 4px; }
+.cube-page .swatch { background: var(--diagram-swatch); border-color: var(--diagram-swatch-border); }
 .cube-page .cube-drawing, .cube-page .stage svg { border-color: var(--site-rule); }
 .cube-page .panel { border-radius: 7px; }
 .cube-page .inspector-header h2 { font-size: 18px; font-weight: 700; }
@@ -152,7 +224,7 @@
 
   <section class="width-section" aria-labelledby="widthTitle"><div class="section-top compact"><div><h2 id="widthTitle">Slab widths <span class="light">Select a slab to edit its cubes below.</span></h2></div><div class="sum-badge" id="weightSum"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mo>∑</mo><mi mathvariant="normal">ℓ</mi></msub><msub><mi mathvariant="normal">t</mi><mi mathvariant="normal">ℓ</mi></msub><mo>=</mo><mn>3</mn></mrow></math></div></div><div id="weightControls" class="weight-grid"></div><p class="microcopy">Changing one width redistributes the others proportionally. A width of zero collapses that slab; its drawings are retained.</p></section>
 
-  <section class="sources" aria-labelledby="sourceTitle"><div class="section-top"><div><p class="eyebrow">02 / THE INPUT CUBES</p><h2 id="sourceTitle">Draw the inputs for <span id="selectedSlabHeading">slab 1</span></h2><p class="section-description">Drag inside any square. Open curves extend to the boundary; near-closed curves become loops.</p></div><div class="source-actions"><button class="button subtle" id="copySlab">Copy these inputs to all slabs</button><button class="button subtle" id="complementAll" title="Complement every input filling; the assembled relative cycle is unchanged">Complement all fillings</button></div></div><div id="sourceGrid" class="source-grid"></div><p class="microcopy">Each slab has a separate set of inputs. Draw again to add a component modulo 2. The pale region is the filling; the dark curve is its relative boundary.</p></section>
+  <section class="sources" aria-labelledby="sourceTitle"><div class="section-top"><div><p class="eyebrow">02 / THE INPUT CUBES</p><h2 id="sourceTitle">Draw the inputs for <span id="selectedSlabHeading">slab 1</span></h2><p class="section-description">Drag inside any square. Open curves extend to the boundary; near-closed curves become loops.</p></div><div class="source-actions"><button class="button subtle" id="copySlab">Copy these inputs to all slabs</button><button class="button subtle" id="complementAll" title="Complement every input filling; the assembled relative cycle is unchanged">Complement all fillings</button></div></div><div id="sourceGrid" class="source-grid"></div><p class="microcopy">Each slab has a separate set of inputs. Draw again to add a component modulo 2. The shaded region is the filling; the teal curve is its relative boundary.</p></section>
 
   <section id="mapInspector" class="inspector panel" aria-labelledby="mapInspectorTitle"><div class="inspector-header"><p class="eyebrow">03 / LOOK INSIDE THE MAP</p><h2 id="mapInspectorTitle">The four cut-and-translate steps</h2></div><div class="inspector-body"><div class="inspector-controls"><div><label for="inspectCube">Input cube</label><select id="inspectCube"></select></div><div><label for="inspectSlab">Slab</label><select id="inspectSlab"></select></div><div class="inspector-width">Intersection width <span class="mono" id="inspectNu"></span></div></div><p class="section-description">The unit square first scales uniformly by <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi mathvariant="normal">ρ</mi><mo>=</mo><msqrt><mi mathvariant="normal">ν</mi></msqrt></mrow></math>. Each subsequent operation only translates pieces. Panels show the fillings, including their outer edges; dashed lines show the final piece partition at every stage. At <math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">ν</mi><mo>=</mo><mn>1</mn></math>, the translations cancel in the final panel, giving the identity map.</p><div id="stageStrip" class="stage-strip"></div><p class="inspector-formula" id="inspectFormula"></p></div></section>
 
@@ -773,7 +845,7 @@
   const G = globalThis.SlabGeometry, C = globalThis.CycleTools;
   const $ = id => document.getElementById(id);
   const UNIT = [[0,0],[1,0],[1,1],[0,1]];
-  const COLORS = ['#377a79','#b9844e','#7386ac','#aa7182','#71976b','#928064','#658ba5','#9c8cba','#aa785e','#6b9b90','#b19c52','#6e799b','#9e7e91','#809969','#7b969e','#a18d74','#8d79a0','#668e73','#ad877f','#8d9960'];
+  const COLORS = Array.from({length:20}, (_,i) => `var(--slab-${i+1})`);
   const state = { N:3, K:4, selected:0, inspectCube:0, inspectSlab:0,
     ticks:[900,750,800,550], inputs:[], showFill:true, showGuides:true, showSeams:true, playing:false };
   let queued=false, animationId=0, animationStart=0, lastAnimation=0, animationBase=[], draft=null;
@@ -816,7 +888,7 @@
   function inputRings(e) { return e.flip?[UNIT,...e.rings]:e.rings; }
   function ringsPath(rings,map) { return rings.map(r=>r.length?'M'+r.map(p=>map(p).map(num).join(',')).join('L')+'Z':'').join(''); }
   function linesPath(segments,map) { return segments.map(s=>'M'+map(s[0]).map(num).join(',')+'L'+map(s[1]).map(num).join(',')).join(''); }
-  function svgText(x,y,text,size=10,fill='#7d8c82',anchor='middle',extra='') { return `<text x="${num(x)}" y="${num(y)}" text-anchor="${anchor}" font-family="system-ui,sans-serif" font-size="${size}" fill="${fill}" ${extra}>${text}</text>`; }
+  function svgText(x,y,text,size=10,fill='var(--diagram-label)',anchor='middle',extra='') { return `<text x="${num(x)}" y="${num(y)}" text-anchor="${anchor}" font-family="system-ui,sans-serif" font-size="${size}" fill="${fill}" ${extra}>${text}</text>`; }
 
   function computeAssembly() {
     const rings=[], carried=[], cells=[], spans=intervals();
@@ -842,14 +914,14 @@
     const map=p=>[left+p[0]*u,top+(1-p[1])*u];
     const svg=$('assemblySvg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
     $('assemblyContainer').style.maxWidth=(state.N*215+46)+'px';
-    let out=`<title>Relative cycle in a rectangle of length ${state.N}</title><desc>Fillings are mapped separately into every slab–cube intersection. Matching edges cancel modulo two. Click a slab to edit its source cubes.</desc><defs><clipPath id="mainClip"><rect x="${left}" y="${top}" width="${state.N*u}" height="${u}"/></clipPath></defs><rect x="${left}" y="${top}" width="${state.N*u}" height="${u}" fill="#fafbf5"/>`;
+    let out=`<title>Relative cycle in a rectangle of length ${state.N}</title><desc>Fillings are mapped separately into every slab–cube intersection. Matching edges cancel modulo two. Click a slab to edit its source cubes.</desc><defs><clipPath id="mainClip"><rect x="${left}" y="${top}" width="${state.N*u}" height="${u}"/></clipPath></defs><rect x="${left}" y="${top}" width="${state.N*u}" height="${u}" fill="var(--diagram-ground)"/>`;
     const spans=intervals();
     if(state.showFill)for(const s of spans){
       const rs=assembled.cells.filter(c=>c.l===s.l).flatMap(c=>c.rings);
       out+=`<path d="${ringsPath(rs,map)}" fill="${COLORS[s.l]}" fill-opacity=".24" fill-rule="evenodd" clip-path="url(#mainClip)"/>`;
     }
     if(state.showGuides){
-      for(let i=1;i<state.N;i++)out+=`<path d="M${left+i*u},${top}v${u}" stroke="#b7c1b7" stroke-width="1" stroke-dasharray="4 5"/>`;
+      for(let i=1;i<state.N;i++)out+=`<path d="M${left+i*u},${top}v${u}" stroke="var(--diagram-guide)" stroke-width="1" stroke-dasharray="4 5"/>`;
       for(const s of spans)if(s.start>0 && s.width>0)out+=`<path d="M${num(left+s.start*u)},${top}v${u}" stroke="${COLORS[s.l]}" stroke-opacity=".35" stroke-width=".8"/>`;
     }
     // Classify the actual boundary by exact collinear overlap with transported
@@ -857,11 +929,11 @@
     const finalPath=linesPath(assembled.segments,map);
     const carriedPath=linesPath(assembled.carried,map);
     if(state.showSeams){
-      out+=`<path d="${linesPath(assembled.seams,map)}" fill="none" stroke="#b96c43" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>`;
-      out+=`<path d="${carriedPath}" fill="none" stroke="#235c5d" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/>`;
-    }else out+=`<path d="${finalPath}" fill="none" stroke="#235c5d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>`;
-    out+=`<rect x="${left}" y="${top}" width="${state.N*u}" height="${u}" fill="none" stroke="#8a9d8d" stroke-width="1"/>`;
-    for(let i=0;i<state.N;i++)out+=svgText(left+(i+.5)*u,top-17,svgIndex('C',i+1),11,'#69816f');
+      out+=`<path d="${linesPath(assembled.seams,map)}" fill="none" stroke="var(--diagram-seam)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>`;
+      out+=`<path d="${carriedPath}" fill="none" stroke="var(--diagram-cycle)" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/>`;
+    }else out+=`<path d="${finalPath}" fill="none" stroke="var(--diagram-cycle)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>`;
+    out+=`<rect x="${left}" y="${top}" width="${state.N*u}" height="${u}" fill="none" stroke="var(--diagram-border)" stroke-width="1"/>`;
+    for(let i=0;i<state.N;i++)out+=svgText(left+(i+.5)*u,top-17,svgIndex('C',i+1),11,'var(--diagram-label)');
     for(const s of spans){
       const x=left+s.start*u,w=s.width*u;
       if(w>0){
@@ -870,8 +942,8 @@
         if(w>38)out+=svgText(x+w/2,top+u+25,svgIndex('S',s.l+1),10,COLORS[s.l]);
       }
     }
-    out+=svgText(left,top+u+45,'0',9,'#8a978b');out+=svgText(left+state.N*u,top+u+45,String(state.N),9,'#8a978b');
-    out+=svgText(left+state.N*u/2,top+u+45,`Q = [0, ${state.N}] × [0, 1]`,10,'#7c8d7e');
+    out+=svgText(left,top+u+45,'0',9,'var(--diagram-label)');out+=svgText(left+state.N*u,top+u+45,String(state.N),9,'var(--diagram-label)');
+    out+=svgText(left+state.N*u/2,top+u+45,`Q = [0, ${state.N}] × [0, 1]`,10,'var(--diagram-label)');
     svg.innerHTML=out;
     $('pieceCount').textContent=`${assembled.cells.length} nonempty intersections`;
     $('seamLegend').hidden=!state.showSeams;
@@ -935,9 +1007,9 @@
     const e=inputAt(state.selected,i),map=p=>[p[0]*200,(1-p[1])*200];
     const rings=inputRings(e),segments=G.boundarySegments(e.rings,[0,0,1,1]);
     const svg=$('cubeSvg'+i);if(!svg)return;
-    let out=`<title>Input filling in cube ${i+1}, slab ${state.selected+1}</title><path d="M50 0V200M100 0V200M150 0V200M0 50H200M0 100H200M0 150H200" stroke="#e9ece4" stroke-width=".6"/>`;
+    let out=`<title>Input filling in cube ${i+1}, slab ${state.selected+1}</title><path d="M50 0V200M100 0V200M150 0V200M0 50H200M0 100H200M0 150H200" stroke="var(--diagram-grid)" stroke-width=".6"/>`;
     out+=`<path d="${ringsPath(rings,map)}" fill="${COLORS[state.selected]}" fill-opacity=".18" fill-rule="evenodd"/>`;
-    out+=`<path d="${linesPath(segments,map)}" fill="none" stroke="#235c5d" stroke-width="1.7" stroke-linecap="round"/>`;
+    out+=`<path d="${linesPath(segments,map)}" fill="none" stroke="var(--diagram-cycle)" stroke-width="1.7" stroke-linecap="round"/>`;
     out+=`<path id="draft${i}" fill="none" stroke="${COLORS[state.selected]}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>`;
     svg.innerHTML=out;
   }
@@ -997,10 +1069,10 @@
     const notes=[`Input filling ${math(filling(l,i))}`,math(`${mi('ρ')}<mo>=</mo><msqrt>${mi('ν')}</msqrt><mo>=</mo><mn>${rho.toFixed(3)}</mn>`),`${tau(1)} · diagonal cut`,`${tau(2)} · diagonal cut`,`${tau(3)} · vertical strips`,`${tau(4)} · target slab`];
     $('stageStrip').innerHTML=stageData.map((d,s)=>{
       const b=boxes[s],cx=(b[0]+b[2])/2,cy=(b[1]+b[3])/2,map=p=>[100+(p[0]-cx)*scale,100-(p[1]-cy)*scale];
-      let content=`<path d="${ringsPath(d.domains,map)}" fill="#edf1e7" fill-rule="evenodd"/>`;
+      let content=`<path d="${ringsPath(d.domains,map)}" fill="var(--diagram-domain)" fill-rule="evenodd"/>`;
       content+=`<path d="${ringsPath(d.fillings,map)}" fill="${COLORS[l]}" fill-opacity=".35" fill-rule="evenodd"/>`;
-      content+=d.domains.map((r,j)=>`<path d="${ringsPath([r],map)}" fill="none" stroke="#9baa98" stroke-width=".65" stroke-dasharray="2 2"/>`).join('');
-      content+=`<path d="${linesPath(G.boundarySegments(d.fillings),map)}" fill="none" stroke="#235c5d" stroke-width="1.2"/>`;
+      content+=d.domains.map((r,j)=>`<path d="${ringsPath([r],map)}" fill="none" stroke="var(--diagram-partition)" stroke-width=".65" stroke-dasharray="2 2"/>`).join('');
+      content+=`<path d="${linesPath(G.boundarySegments(d.fillings),map)}" fill="none" stroke="var(--diagram-cycle)" stroke-width="1.2"/>`;
       return `<div class="stage"><svg viewBox="0 0 200 200" role="img" aria-label="${titles[s]} for intersection width ${fmt(nu)}">${content}</svg><p class="stage-label">${s+1}. ${titles[s]}</p><p class="stage-note">${notes[s]}</p></div>`;
     }).join('');
     const image=`${indexed('T',fmt(nu))}<mo>(</mo>${filling(l,i)}<mo>)</mo>`;
@@ -1076,7 +1148,19 @@
   $('inspectSlab').addEventListener('change',ev=>{state.inspectSlab=+ev.target.value;renderInspector();});
   $('reset').addEventListener('click',()=>{stopAnimation();cancelDrawing();Object.assign(state,{N:3,K:4,selected:0,inspectCube:0,inspectSlab:0,ticks:[900,750,800,550]});initializeInputs();renderAll();say('Experiment reset.');});
   $('exportSvg').addEventListener('click',()=>{
-    const svg=$('assemblySvg').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.removeAttribute('id');svg.setAttribute('width',state.N*180+46);svg.setAttribute('height','269');
+    const source=$('assemblySvg'), svg=source.cloneNode(true);
+    svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.removeAttribute('id');svg.setAttribute('width',state.N*180+46);svg.setAttribute('height','269');
+    // Make the download independent of the page's inherited palette and fonts.
+    const originals=source.querySelectorAll('*'), copies=svg.querySelectorAll('*');
+    originals.forEach((node,i)=>{
+      const style=getComputedStyle(node);
+      for(const property of ['fill','stroke'])if(node.hasAttribute(property))copies[i].setAttribute(property,style.getPropertyValue(property));
+      if(node.tagName.toLowerCase()==='text')copies[i].setAttribute('font-family',style.fontFamily);
+    });
+    const background=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    background.setAttribute('width','100%');background.setAttribute('height','100%');
+    background.setAttribute('fill',getComputedStyle(source).backgroundColor);
+    svg.insertBefore(background,svg.firstChild);
     const blob=new Blob(['<?xml version="1.0" encoding="UTF-8"?>\n',new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='long-rectangle-sweepout.svg';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);say('Current diagram exported as SVG.');
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAnimation();});
