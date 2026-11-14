@@ -8,6 +8,13 @@
 (() => {
   'use strict';
 
+  // Set to true to restore rotating backgrounds on regular page visits.
+  const showPageBackgrounds = false;
+  const artwork = document.body.dataset.surfaceDisplay === 'artwork';
+  const requestedSurface = document.body.dataset.surface ||
+    new URLSearchParams(window.location.search).get('surface');
+  if (!showPageBackgrounds && !artwork && !requestedSurface) return;
+
   if (document.querySelector('.minimal-surface-background')) return;
 
   const canvas = document.createElement('canvas');
@@ -188,13 +195,10 @@
   if (window.createDrawingSurfaceScene) presets.push({ name: 'sketch-constellation' });
 
   // No persistence: a fresh load makes a fresh choice, fixed until the next load.
-  const requestedSurface = document.body.dataset.surface ||
-    new URLSearchParams(window.location.search).get('surface');
   const preset = presets.find(candidate => candidate.name === requestedSurface) ||
     presets[Math.floor(Math.random() * presets.length)];
   const side = Math.random() < .5 ? -1 : 1;
   const initialTurn = -.65 + Math.random() * .3;
-  const artwork = document.body.dataset.surfaceDisplay === 'artwork';
   const drawing = preset.name === 'sketch-constellation' ?
     window.createDrawingSurfaceScene({ context, compact, artwork, side }) : null;
   const geometry = drawing ? null : preset.make();
